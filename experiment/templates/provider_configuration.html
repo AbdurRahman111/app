@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+	<div class="card shadow border-0 p-3">
+		<form method="post">
+			{% csrf_token %}
+			{% if page_type == 'Email' %}
+				<div>
+					<center><h1 class="mb-5">E-Mail Configurations</h1></center>
+					<div class="form-group col-sm-5">
+						<select id="email-provider" class="form-select" aria-label="Default select example" name="email-provider" required=''>
+						  	<option selected disabled="disabled" value="">Select email provider</option>
+						  	<option value="MailChimp">MailChimp</option>
+						</select>
+					</div>
+					<br>
+					<div class="survey-configurations-card mt-5" style="width: 100%; border-radius: .25rem;">
+			        	<div class="survey-configurations-card-head" style="width: 40%;">
+			        		Email Provider Coniguration
+			        	</div>
+			        	<div class="form-group row mb-3">
+						    <label for="api-key" class="col-sm-2 col-form-label">API Key:<span style="color: red; font-weight: bold;">*</span></label>
+						    <div class="col-sm-10">
+						      <input type="password" name="mail-api-key" id="api-key" class="form-control textinput col-md-9" required placeholder="********">
+						    </div>
+						</div>
+						<div class="form-group row mb-3">
+						    <label for="data-center" class="col-sm-2 col-form-label">Data Center:<span style="color: red; font-weight: bold;">*</span></label>
+						    <div class="col-sm-10">
+						      <input type="password" name="mail-data-center" id="data-center" class="form-control textinput col-md-9" required placeholder="Last 3 digits of your MailChimp API key">
+						    </div>
+						</div>
+						<div class="form-group row mb-3">
+						    <label for="audience-id" class="col-sm-2 col-form-label">Audience Id:<span style="color: red; font-weight: bold;">*</span></label>
+						    <div class="col-sm-10">
+						      <input type="password" name="mail-audience-id" id="audience-id" class="form-control textinput col-md-9" required placeholder="********">
+						    </div>
+						</div>
+			        </div>
+				</div>
+			{% else %}
+				<div class="main-box-body">
+					<center><h1 class="mb-5">Ads Configurations</h1></center>
+					<div class="form-group col-sm-5">
+						<select id="display-campaign-provider" class="form-select" aria-label="Default select example" name="display-campaign-provider" required=''>
+						  	<option selected disabled="disabled" value="">Select display campaign provider</option>
+						  	<option value="Facebook">Facebook</option>
+						  	<option value="Google">Google</option>
+						  	<option value="Both">Both</option>
+						</select>
+					</div>
+					<br>
+					<div class="survey-setting-area">
+						<div class="survey-configurations-card mt-5 col-md-6 facebook-panel hidden" style="width: 100%;">
+				        	<div class="survey-configurations-card-head" style="width: 40%;">
+				        		Facebook Ads Configuration
+				        	</div>
+				        	<div class="form-group row mb-3">
+							    <label for="facebook-access-key" class="col-sm-4 col-form-label">Access Key/Access Token:<span style="color: red; font-weight: bold;">*</span></label>
+							    <div class="col-sm-8">
+							      <input type="password" name="facebook-access-key" id="facebook-access-key" class="form-control textinput col-md-9" placeholder="********">
+							    </div>
+							</div>
+							<div class="form-group row mb-3">
+							    <label for="facebook-secret-key" class="col-sm-4 col-form-label">Secret Key/App Secret:<span style="color: red; font-weight: bold;">*</span></label>
+							    <div class="col-sm-8">
+							      <input type="password" name="facebook-secret-key" id="facebook-secret-key" class="form-control textinput col-md-9" placeholder="********">
+							    </div>
+							</div>
+							<div class="form-group row mb-3">
+							    <label for="facebook-secret-key" class="col-sm-4 col-form-label">App Id:<span style="color: red; font-weight: bold;">*</span></label>
+							    <div class="col-sm-8">
+							      <input type="password" name="facebook-app-id" id="facebook-app-id" class="form-control textinput col-md-9" placeholder="********">
+							    </div>
+							</div>
+				        </div>
+				        <div class="survey-configurations-card mt-5 col-md-6 google-panel hidden" style="width: 100%;">
+				        	<div class="survey-configurations-card-head" style="width: 40%;">
+				        		Google Ads Configuration
+				        	</div>
+				        	<div class="form-group row mb-3">
+							    <label for="google-access-key" class="col-sm-4 col-form-label">Developer Token:<span style="color: red; font-weight: bold;">*</span></label>
+							    <div class="col-sm-8">
+							      <input type="password" name="google-developer-token" id="google-developer-token" class="form-control textinput col-md-9" placeholder="********">
+							    </div>
+							</div>
+							<div class="form-group row mb-3">
+							    <label for="google-secret-key" class="col-sm-4 col-form-label">Client Id:<span style="color: red; font-weight: bold;">*</span></label>
+							    <div class="col-sm-8">
+							      <input type="password" name="google-client-id" id="google-client-id" class="form-control textinput col-md-9" placeholder="********">
+							    </div>
+							</div>
+							<div class="form-group row mb-3">
+							    <label for="google-other-info-1" class="col-sm-4 col-form-label">Client Secret:<span style="color: red; font-weight: bold;">*</span></label>
+							    <div class="col-sm-8">
+							      <input type="password" name="google-client-secret" id="google-client-secret" class="form-control textinput col-md-9" placeholder="********">
+							    </div>
+							</div>
+							<div class="form-group row mb-3">
+							    <label for="google-other-info-2" class="col-sm-4 col-form-label">Refresh Token:<span style="color: red; font-weight: bold;">*</span></label>
+							    <div class="col-sm-8">
+							      <input type="password" name="google-refresh-token" id="google-refresh-token" class="form-control textinput col-md-9" placeholder="********">
+							    </div>
+							</div>
+				        </div>	
+					</div>
+				</div>
+				<script type="text/javascript">
+					let campaignProvider = document.getElementById('display-campaign-provider');
+					const facebookPanel = document.querySelector('.facebook-panel');
+					const googlePanel = document.querySelector('.google-panel');
+
+					// event triggered when value is changed for change
+					campaignProvider.addEventListener('change', (event) => {
+				  		let value = campaignProvider.value;
+
+				  		if(value == 'Facebook'){
+				  			facebookPanel.classList.remove('hidden');
+				  			if(!googlePanel.classList.contains('hidden')){
+				  				googlePanel.classList.add('hidden');
+				  			}
+				  		}
+				  		else if(value == 'Google'){
+				  			googlePanel.classList.remove('hidden');
+				  			if(!facebookPanel.classList.contains('hidden')){
+				  				facebookPanel.classList.add('hidden');
+				  			}
+				  		}
+				  		else if(value == 'Both')
+				  		{
+				  			facebookPanel.classList.remove('hidden');
+				  			googlePanel.classList.remove('hidden');
+				  		}
+				  	});
+				</script>
+			{% endif %}
+				<div class="mb-5">
+		        	<button id="upload-file" type="submit" class="btn add-more-btn mt-4">Apply</button>
+		        	<a href="" class="btn btn-danger cancel-btn mt-4 ms-4">Cancel</a>
+		        </div>
+		        <br>
+			</form>
+	</div>
+{% endblock %}

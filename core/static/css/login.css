@@ -1,0 +1,273 @@
+:root {
+    /*For other styles*/
+    --main-color: #008CFF;
+}
+
+/* Start Global rules */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+/* End Global rules */
+
+/* Start body rules */
+body {
+    background: url('/static/assets/background-image-2.jpg') no-repeat fixed;
+    background-size: cover ;
+    /*   the main font */
+    font-family: 'Abel', sans-serif;
+    opacity: .95;
+    /* background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%); */
+}
+
+
+
+/* |||||||||||||||||||||||||||||||||||||||||||||*/
+/* //////////////////////////////////////////// */
+
+/* End body rules */
+
+/* Start form  attributes */
+.errorlist {
+    margin-top: 1rem;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+        border-top-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        border-left-color: transparent;
+    border-radius: .25rem;
+    list-style: none;
+}
+
+form {
+    width: 450px;
+    min-height: 500px;
+    height: auto;
+    border-radius: 15px;
+    margin: 5% auto;
+    box-shadow: 2px 5px 10px 3px #bbb;
+    padding: 2%;
+    background: #fff;
+}
+
+/* form Container */
+form .con {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin: 0 auto;
+}
+
+/* the header form form */
+header {
+    margin: 2% auto 10% auto;
+    text-align: center;
+}
+/* Login title form form */
+header h2 {
+    font-size: 200%;
+    color: #3e403f;
+}
+/*  A welcome message or an explanation of the login form */
+header h3 {
+    font-size: 1.5rem;
+    color: #3e403f;
+}
+header p {
+    letter-spacing: 0.05em;
+    font-size: 1rem;
+    color: #3e403f;
+}
+
+
+
+/* //////////////////////////////////////////// */
+/* //////////////////////////////////////////// */
+
+
+.input-item {
+    background: #fff;
+    color: #333;
+    padding: 15px 0px 16px 9px;
+    border-radius: 5px 0px 0px 5px;
+    border: 1px solid #333;
+    border-right: none;
+    margin-top: 5px;
+}
+
+
+
+/* Show/hide password Font Icon */
+#eye {
+    background: #fff;
+    color: #333;
+
+    margin: 6px 0 0 0;
+    margin-left: -20px;
+    padding: 15px 9px 17px 0px;
+    border: 1px solid #333;
+    border-left: none;
+    border-radius: 0px 5px 5px 0px;
+
+    float: right;
+    position: relative;
+    right: 1%;
+    top: -.2%;
+    z-index: 5;
+    
+    cursor: pointer;
+}
+/* inputs form  */
+input[class="form-input"]{
+    width: 250px;
+    height: 50px;
+
+    margin-top: 6px;
+    padding: 15px;
+    
+    font-size: 16px;
+    font-family: 'Abel', sans-serif;
+    color: #5E6472;
+
+    outline: none;
+    border: none;
+
+    border: 1px solid #333;
+    border-left: none;
+    border-radius: 0px 5px 5px 0px;
+    transition: 0.2s linear;
+    
+}
+
+input[id="txt-input"] {width: 255px;}
+
+/* focus  */
+input:focus {
+    transform: translateX(-2px);
+    border-radius: 5px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+/* //////////////////////////////////////////// */
+/* //////////////////////////////////////////// */
+
+/* input[type="text"] {min-width: 250px;} */
+/* buttons  */
+button, .registration-btn {
+    display: inline-block;
+    color: #252537;
+
+    width: 285px;
+    height: 50px;
+
+    padding: 10px 20px;
+    background: #fff;
+    border-radius: 5px;
+    
+    outline: none;
+    border: 1px solid #333;
+
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s linear;
+    
+    margin: 7% auto;
+    letter-spacing: 0.05em;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.log-in {
+    border-color: var(--main-color);
+    background-color: var(--main-color);
+    color: #fff;
+}
+
+/* buttons hover */
+button:hover, button:focus, button:active,
+.registration-btn:hover, .registration-btn:focus,
+.registration-btn:active {
+    transform: translatey(3px);
+    box-shadow: none;
+    border-color: var(--main-color);
+    color: #fff;
+    background: var(--main-color);
+}
+
+/* buttons hover Animation */
+button:hover, button:focus, button:active,
+.registration-btn:hover, .registration-btn:focus,
+.registration-btn:active {
+    animation: ani9 0.4s ease-in-out infinite alternate;
+}
+
+.registration-btn {
+    text-decoration: none;
+}
+
+.registration-container {
+    text-align: center;
+}
+
+.registration-container p {
+  letter-spacing: 0.05em;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  color: #3e403f;
+}
+
+.registration-container span {
+  font-size: .9rem;
+  text-align: center;
+  color: #3e403f;
+  margin-top: 10px;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+}
+
+.row div.col-auto {
+    align-self: center;
+}
+
+.row div.col {
+    width: 40%;
+}
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+@keyframes ani9 {
+    0% {
+        transform: translateY(3px);
+    }
+    100% {
+        transform: translateY(5px);
+    }
+}
+
+@-moz-document url-prefix() { 
+  .input-item {
+     padding: 15px 0px 16px 9px;
+  }
+}

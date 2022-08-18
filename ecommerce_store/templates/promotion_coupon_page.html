@@ -1,0 +1,112 @@
+{% extends 'ecommerce_base.html' %}
+{% load static %}
+{% block title%}Promotional Coupon Page{% endblock %}
+
+
+{% block body %}
+
+
+<div style="padding-top:35px; margin-left:10%; margin-right:10%;">
+    {% if all_any %}
+    <div style="padding-top:20px;">
+        <h3 class="text-center" style="border-style: dashed; border-color:#25ACE3; color:#25ACE3;">Any Product Discount</h3>
+        <div class="row">
+
+            {% for i in all_any %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <img src="{{i.image.url}}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title">{{i.title}}</h5>
+                          <p class="card-text">Discount : <span class="badge rounded-pill bg-warning text-dark">{{i.Discount_percentage}}%</span> <br>Coupon : <span class="badge rounded-pill bg-info text-dark">{{i.Promotional_deals_Coupon_Code}}</span></p>
+        <!--                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+
+            {% endfor %}
+
+            </div>
+        </div>
+    {% endif %}
+
+
+
+
+    {% if all_cate %}
+    <div style="padding-top:20px;">
+        <h3 class="text-center" style="border-style: dashed; margin-top:40px; border-color:#25ACE3; color:#25ACE3;">Category Level Discount</h3>
+
+
+        <div class="row">
+            {% for i in all_cate %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <img src="{{i.image.url}}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title">Category : {{i.Category.name}}</h5>
+                          <p class="card-text">Discount : <span class="badge rounded-pill bg-warning text-dark">{{i.Discount_percentage}}%</span> <br>Coupon : <span class="badge rounded-pill bg-info text-dark">{{i.Promotional_deals_Coupon_Code}}</span></p>
+        <!--                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+    {% endif %}
+
+
+
+
+    {% if all_specific %}
+    <div style="padding-top:20px; margin-top:20px;">
+        <h3 class="text-center" style="border-style: dashed; border-color:#25ACE3; color:#25ACE3;">Specific Level Product Discount</h3>
+        <div class="row">
+
+            {% for i in all_specific %}
+            <div class="col-md-3 col-lg-3">
+                <div class="card" style="">
+                  <img src="{{i.product.image.url}}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title text-center">{{i.product.name}} <br><span class="badge rounded-pill bg-warning text-dark">Save up to {{i.Discount_percentage}}% </span></h5>
+                      <h4 class="card-text text-center"><span class="badge rounded-pill bg-info text-dark">Coupon : {{i.Promotional_deals_Coupon_Code}}</span></h4>
+
+                  </div>
+                </div>
+            </div>
+
+
+            {% endfor %}
+
+            </div>
+    </div>
+    {% endif %}
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+{% endblock %}

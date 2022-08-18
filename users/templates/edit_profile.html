@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+<div id="page-content" class="card shadow border-0 p-3">
+	<h2 class="page-title">My Account</h2>
+	<div class="no-padding no-shadow profile-content">
+		<div class="side-bar-menu-wrapper column-left-lg">
+			<div class="widget">
+				<div class="sidebar-widget">
+					<h4>My Apps</h4>
+					<hr>
+					<ul class="widget-list">
+						<li class="">
+							<a class="widget-link" href="{% url 'users:configure-ad-providers' %}">
+								<span>
+									<i class="fas fa-ad"></i>
+									Configure Providers
+								</span>
+							</a>
+						</li>
+						<li class="">
+							<a class="widget-link" href="#">
+								<span>
+									<i class="fab fa-aws"></i>
+									S3 Bucket Configuration
+								</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="widget">
+				<div class="sidebar-widget">
+					<h4>Account Options</h4>
+					<hr>
+					<ul class="widget-list">
+						<li class="">
+							<a class="widget-link" href="#">
+								<span>
+									<i class="fas fa-user-circle"></i>
+									Dashboard
+								</span>
+							</a>
+						</li>
+						<li class="">
+							<a class="widget-link" href="#">
+								<span>
+									<i class="fas fa-key"></i>
+									Change Password
+								</span>
+							</a>
+						</li>
+						<li class="">
+							<a class="widget-link" href="{% url 'users:edit-user-profile' %}">
+								<span>
+									<i class="fas fa-user-cog"></i>
+									Update Profile
+								</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="column-right-lg">
+			<div class="dashboard-box">
+				<div class="dash-box-hd">
+					<h3>
+						<span class="fl">
+							<div class="media">
+								<img class="rounded-circle account-img" src="{{user.user_profile.profile_image.url }}">
+								<div class="media-body">
+									<h2 class="account-heading"> Welcome {{user.username}}!</h2>
+									<p class="text-secondary">{{user.email}}</p>
+									<span class="text-secondary">Member Since:</span> 
+									<span class="text-secondary">{{ user.date_joined|date:"D, d M, Y" }}</span> 
+								</div>
+							</div>
+						</span> 
+					</h3>
+				</div>
+			</div>
+			<div class="form-content-section">
+				<legend class="border-bottom mb-4">User Profile Information</legend>
+				<form method="POST" class="profile-update" enctype="multipart/form-data">
+					{% csrf_token %}
+					<div class="row form-row mb-3">
+			            <div class="form-group col-md-6">
+			                <label class="panel-body-text">First Name:<span style="color: red; font-weight: bold;">*</span></label>
+			                {{u_form.first_name}}
+			            </div>
+			            <div class="form-group col-md-6">
+			                <label class="panel-body-text">Last Name:<span style="color: red; font-weight: bold;">*</span></label>
+			                {{u_form.last_name}}
+			            </div>
+			        </div>
+			        <div class="form-group col-md-12 mb-3">
+		                <label class="panel-body-text">Email:<span style="color: red; font-weight: bold;">*</span></label>
+		                {{u_form.email}}
+		            </div>
+		            <div class="form-group col-md-12 mb-3">
+		                <label class="panel-body-text">Date of Birth:<span style="color: red; font-weight: bold;">*</span></label>
+		                {{p_form.date_of_birth}}
+		            </div>
+		            <div class="form-group col-md-12 mb-3">
+		                <label class="panel-body-text">Gender:<span style="color: red; font-weight: bold;">*</span></label>
+		                {{p_form.gender|safe}}
+		            </div>
+		            <div class="form-group col-md-12 mb-3">
+		                <label class="panel-body-text">Profile Image:</label>
+		                {{p_form.profile_image}}
+		            </div>
+					<div class="form-group-options">
+						<button class="btn add-more-btn" type="submit">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

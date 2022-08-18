@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+	<div class="card shadow border-0 p-3">
+		<form method="post">
+			{% csrf_token %}
+			<div>
+				<center><h1 class="mb-5">Setup Campaign Providers</h1></center>
+				<div class="form-group col-sm-12">
+					<select id="campaign-provider" class="form-select" aria-label="Default select example" name="campaign-provider" required=''>
+					  	<option selected disabled="disabled" value="">Select Integrated Marketing Channel Provider</option>
+					  	<option value="MailChimp">MailChimp</option>
+					  	<option value="Facebook">Facebook</option>
+					  	<option value="Google">Google</option>
+					  	<option value="All">All</option>
+					</select>
+				</div>
+				<br>
+				<div class="survey-configurations-card mt-5 mailchimp-panel hidden" style="width: 100%; border-radius: .25rem;">
+		        	<div class="survey-configurations-card-head" style="width: 40%;">
+		        		MailChimp API Coniguration
+		        	</div>
+		        	<div class="form-group row mb-3">
+					    <label for="api-key" class="col-sm-2 col-form-label">API Key:<span style="color: red; font-weight: bold;">*</span></label>
+					    <div class="col-sm-10">
+					      <input type="password" name="mail-api-key" id="api-key" class="form-control textinput col-md-9" required placeholder="********">
+					    </div>
+					</div>
+					<div class="form-group row mb-3">
+					    <label for="data-center" class="col-sm-2 col-form-label">Data Center:<span style="color: red; font-weight: bold;">*</span></label>
+					    <div class="col-sm-10">
+					      <input type="password" name="mail-data-center" id="data-center" class="form-control textinput col-md-9" required placeholder="Last 3 digits of your MailChimp API key">
+					    </div>
+					</div>
+					<div class="form-group row mb-3">
+					    <label for="audience-id" class="col-sm-2 col-form-label">Audience Id:<span style="color: red; font-weight: bold;">*</span></label>
+					    <div class="col-sm-10">
+					      <input type="password" name="mail-audience-id" id="audience-id" class="form-control textinput col-md-9" required placeholder="********">
+					    </div>
+					</div>
+		        </div>
+
+				<div class="survey-configurations-card mt-5 col-md-112 facebook-panel hidden" style="width: 100%; border-radius: .25rem;">
+		        	<div class="survey-configurations-card-head" style="width: 40%;">
+		        		Facebook Ads API Configuration
+		        	</div>
+		        	<div class="form-group row mb-3">
+					    <label for="facebook-access-key" class="col-sm-4 col-form-label">Access Key/Access Token:<span style="color: red; font-weight: bold;">*</span></label>
+					    <div class="col-sm-8">
+					      <input type="password" name="facebook-access-key" id="facebook-access-key" class="form-control textinput col-md-9" placeholder="********">
+					    </div>
+					</div>
+					<div class="form-group row mb-3">
+					    <label for="facebook-secret-key" class="col-sm-4 col-form-label">Secret Key/App Secret:<span style="color: red; font-weight: bold;">*</span></label>
+					    <div class="col-sm-8">
+					      <input type="password" name="facebook-secret-key" id="facebook-secret-key" class="form-control textinput col-md-9" placeholder="********">
+					    </div>
+					</div>
+					<div class="form-group row mb-3">
+					    <label for="facebook-secret-key" class="col-sm-4 col-form-label">App Id:<span style="color: red; font-weight: bold;">*</span></label>
+					    <div class="col-sm-8">
+					      <input type="password" name="facebook-app-id" id="facebook-app-id" class="form-control textinput col-md-9" placeholder="********">
+					    </div>
+					</div>
+		        </div>
+
+		        <div class="survey-configurations-card mt-5 col-md-12 google-panel hidden" style="width: 100%; border-radius: .25rem;">
+		        	<div class="survey-configurations-card-head" style="width: 40%;">
+		        		Google Ads API Configuration
+		        	</div>
+		        	<div class="form-group row mb-3">
+					    <label for="google-access-key" class="col-sm-4 col-form-label">Developer Token:<span style="color: red; font-weight: bold;">*</span></label>
+					    <div class="col-sm-8">
+					      <input type="password" name="google-developer-token" id="google-developer-token" class="form-control textinput col-md-9" placeholder="********">
+					    </div>
+					</div>
+					<div class="form-group row mb-3">
+					    <label for="google-secret-key" class="col-sm-4 col-form-label">Client Id:<span style="color: red; font-weight: bold;">*</span></label>
+					    <div class="col-sm-8">
+					      <input type="password" name="google-client-id" id="google-client-id" class="form-control textinput col-md-9" placeholder="********">
+					    </div>
+					</div>
+					<div class="form-group row mb-3">
+					    <label for="google-other-info-1" class="col-sm-4 col-form-label">Client Secret:<span style="color: red; font-weight: bold;">*</span></label>
+					    <div class="col-sm-8">
+					      <input type="password" name="google-client-secret" id="google-client-secret" class="form-control textinput col-md-9" placeholder="********">
+					    </div>
+					</div>
+					<div class="form-group row mb-3">
+					    <label for="google-other-info-2" class="col-sm-4 col-form-label">Refresh Token:<span style="color: red; font-weight: bold;">*</span></label>
+					    <div class="col-sm-8">
+					      <input type="password" name="google-refresh-token" id="google-refresh-token" class="form-control textinput col-md-9" placeholder="********">
+					    </div>
+					</div>
+		        </div>	
+			</div>
+
+			<div class="mb-2 apply hidden">
+	        	<button id="upload-file" type="submit" class="btn add-more-btn mt-4">Apply</button>
+	        	<a href="{{request.META.HTTP_REFERER}}" class="btn btn-danger cancel-btn mt-4 ms-4">Cancel</a>
+	        </div>
+	        <br>
+		</form>
+	</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		let campaignProvider = document.getElementById('campaign-provider');
+		const facebookPanel = document.querySelector('.facebook-panel');
+		const googlePanel = document.querySelector('.google-panel');
+		const mailchimpPanel = document.querySelector('.mailchimp-panel');
+		const btnPanel = document.querySelector('.apply');
+
+		// event triggered when value is changed for campaign provider
+		campaignProvider.addEventListener('change', (event) => {
+	  		let value = campaignProvider.value;
+
+	  		if(value == 'Facebook'){
+	  			facebookPanel.classList.remove('hidden');
+	  			btnPanel.classList.remove('hidden');
+
+	  			if(!googlePanel.classList.contains('hidden')){
+	  				googlePanel.classList.add('hidden');
+	  			}
+
+	  			if(!mailchimpPanel.classList.contains('hidden')){
+	  				mailchimpPanel.classList.add('hidden');
+	  			}
+	  		}
+	  		else if(value == 'Google'){
+	  			googlePanel.classList.remove('hidden');
+	  			btnPanel.classList.remove('hidden');
+
+	  			if(!facebookPanel.classList.contains('hidden')){
+	  				facebookPanel.classList.add('hidden');
+	  			}
+	  			 
+	  			if(!mailchimpPanel.classList.contains('hidden')){
+	  				mailchimpPanel.classList.add('hidden');
+	  			}
+	  		}
+	  		else if(value == 'MailChimp'){
+	  			mailchimpPanel.classList.remove('hidden');
+	  			btnPanel.classList.remove('hidden');
+
+	  			if(!facebookPanel.classList.contains('hidden')){
+	  				facebookPanel.classList.add('hidden');
+	  			}
+	  			
+	  			if(!googlePanel.classList.contains('hidden')){
+	  				googlePanel.classList.add('hidden');
+	  			}
+	  		}
+	  		else if(value == 'All')
+	  		{
+	  			mailchimpPanel.classList.remove('hidden');
+	  			facebookPanel.classList.remove('hidden');
+	  			googlePanel.classList.remove('hidden');
+	  			btnPanel.classList.remove('hidden');
+	  		}
+	  	});
+	</script>
+{% endblock %}

@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+	<div class="card shadow border-0 p-3">
+		<div class="row" style="color: #008CFF; font-weight: bold; font-size: 1.3rem; padding-bottom: 5px;">
+			<div class="col-md-8" style="align-self: end;">{{title}}</div>
+			<div class="col-md-4">
+				{% if page == 'survey' %}              
+					<div style="float:right;">
+						<a class="btn add-more-btn" href="{% url 'surveyscaled:create-survey' %}">Create New</a>
+					</div>
+				{% elif page == 'thirdparty' %}
+					<div style="float:right;">
+						<a class="btn add-more-btn" href="{% url 'surveyscaled:ingest-data' %}">Upload New</a>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+
+		<div style="border-bottom: 2px solid #008CFF;"></div>
+
+		{% if page == 'survey' %}
+			<table class="table table-css">
+				<thead class="thead-inverse">
+					<tr>
+						<th width="6%" class="heading">S. #</th>
+						<th width="10%" class="heading">Name</th>
+						<th width="24%" class="heading">Purpose</th>
+						<th width="15%" class="heading">Total Questions</th>
+						<th width="13%" class="heading">Created</th>
+						<th width="10%" class="heading">Responses</th>
+						<th width="10%" class="heading">Status</th>
+						<th width="12%" class="heading align-middle text-center">Options</th>
+					</tr>
+				</thead>
+
+				{% if object_list %}
+
+					<tbody>         
+						{% for survey in object_list %}
+							<tr>
+								<td>
+									{{ survey.survey_no }}              
+								</td>
+								<td>
+									{{ survey.name }}              
+								</td>
+								<td>
+									{{ survey.survey_purpose }}              
+								</td>
+								<td>
+									{{ survey.get_total_number_of_questions }}              
+								</td>
+								<td>
+									{{ survey.created_on|date:"M d, Y" }}              
+								</td>
+								<td>{{ survey.total_reponses }}</td>
+								{% if survey.is_active %}
+									<td class="text-success">
+										<i class="fas fa-check-circle me-1"></i>Active
+									</td>
+									{% else %}
+									<td class="text-danger">
+										<i class="fas fa-times-circle me-1"></i>Close
+									</td>
+								{% endif %}
+								<td class="align-middle text-center">
+									<a href="{% url 'surveyscaled:survey-created' survey.slug %}" class="btn small-btn add-more-btn" title="Edit Survey">
+										<i class="fas fa-edit"></i>
+									</a>
+									{% if survey.is_active %}
+										<a href="{% url 'surveyscaled:close-survey' survey.slug %}" class="btn btn-outline-danger small-btn" title="Close Survey">
+											<i class="fas fa-power-off"></i>
+										</a>
+									{% endif %}
+		                    	</td>          
+		                	</tr>
+		                {% endfor %}                   
+		            </tbody>
+
+		        	</table>  
+
+			        <div class="align-middle text-center">
+			        	{% if is_paginated %}
+
+			        	{% if page_obj.has_previous %}
+				        	<a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
+				        	<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+			        	{% endif %}
+
+			        	{% for num in page_obj.paginator.page_range %}
+			        	{% if page_obj.number == num %}
+			        		<a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+			        	{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+			        		<a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+			        	{% endif %}
+			        	{% endfor %}
+
+			        	{% if page_obj.has_next %}
+				        	<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+				        	<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+			        	{% endif %}
+
+			        	{% endif %}
+			        </div>
+
+		        {% else %}
+
+		        	<tbody></tbody>   
+		    		</table>
+
+				    <br><br><br><br><br>
+				    <div style="color: #008CFF; font-style: bold; font-size: 1rem; text-align: center;">
+				    	Sorry, No survey exist in the system! 
+				    </div>
+
+		    	{% endif %}
+		{% elif page == 'thirdparty' %}
+			<table class="table table-css">
+				<thead class="thead-inverse">
+					<tr>
+						<th width="10%" class="heading">S. #</th>
+						<th width="50%" class="heading">Name</th>
+						<th width="15%" class="heading">Total Response</th>
+						<th width="10%" class="heading">Status</th>
+						<th width="15%" class="heading align-middle text-center">
+							Options
+						</th>
+					</tr>
+				</thead>
+
+				{% if object_list %}
+
+					<tbody>         
+						{% for survey in object_list %}
+							<tr>
+								<td>
+									{{ forloop.counter }}              
+								</td>
+								<td>
+									{{ survey.survey_name }}              
+								</td>
+								<td>
+									{{ survey.total_reponses }}              
+								</td>
+								{% if survey.is_active %}
+									<td class="text-success">
+										<i class="fas fa-check-circle me-1"></i>Active
+									</td>
+									{% else %}
+									<td class="text-danger">
+										<i class="fas fa-times-circle me-1"></i>Close
+									</td>
+								{% endif %}
+								<td class="align-middle text-center">
+									
+								</td>         
+		                	</tr>
+		                {% endfor %}                   
+		            </tbody>
+
+		        	</table>  
+
+			        <div class="align-middle text-center">
+			        	{% if is_paginated %}
+				        	{% if page_obj.has_previous %}
+					        	<a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
+					        	<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+				        	{% endif %}
+				        	{% for num in page_obj.paginator.page_range %}
+					        	{% if page_obj.number == num %}
+					        		<a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+					        	{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+					        		<a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+					        	{% endif %}
+				        	{% endfor %}
+				        	{% if page_obj.has_next %}
+					        	<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+					        	<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+				        	{% endif %}
+			        	{% endif %}
+			        </div>
+
+		        {% else %}
+
+		        	<tbody></tbody>   
+		    		</table>
+
+				    <br><br><br><br><br>
+				    <div style="color: #008CFF; font-style: bold; font-size: 1rem; text-align: center;">
+				    	Sorry, No survey exist in the system! 
+				    </div>
+
+		    	{% endif %}
+		{% endif %}
+	</div>
+	
+{% endblock %}

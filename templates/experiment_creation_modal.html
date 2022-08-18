@@ -1,0 +1,32 @@
+<div class="modal-overlay hidden"></div>
+<div class="modal experiment-modal">
+    <button class="close-modal">&times;</button>
+    <p class="modal-heading">Please select experiment type</p>
+    <div class="modal-cards">
+        <a class="card-items" href="{% url 'experiment:create-email-experiment' %}">Email Experiment</a>
+        <a class="card-items" href="{% url 'experiment:create-display-experiment' %}">Display Experiment</a>
+    </div>
+</div>
+
+<script>
+  // Scripts for dialog modal
+  const modal = document.querySelector(".experiment-modal");
+  const modalOpen = document.querySelector(".create-experiment");
+  const modalClose = document.querySelector(".close-modal");
+  const modalOverlay = document.querySelector(".modal-overlay");
+
+  modalOpen.addEventListener("click", () => {
+      modal.classList.toggle('visible');
+      modalOverlay.classList.toggle('hidden');
+  })
+
+  modalClose.addEventListener("click", () => {
+      modal.classList.toggle('visible');
+      modalOverlay.classList.toggle('hidden');
+  })
+
+  modalOverlay.addEventListener("click", () => {
+      modal.classList.toggle('visible');
+      modalOverlay.classList.toggle('hidden');
+  })
+</script>

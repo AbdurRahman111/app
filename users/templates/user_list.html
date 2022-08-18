@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+	<div class="card shadow border-0 p-3">
+		<div class="row" style="color: #008CFF; font-weight: bold; font-size: 1.3rem; padding-bottom: 5px;">
+			<div class="col-md-8" style="align-self: end;">{{title}}</div>
+			<div class="col-md-4">
+				<div style="float:right;">
+					<a class="btn add-more-btn" href="{% url 'users:signup' %}">Register New</a>
+				</div>
+			</div>
+		</div>
+
+		<div style="border-bottom: 2px solid #008CFF;"></div>
+
+		<table class="table table-css">
+			<thead class="thead-inverse">
+				<tr>
+					<th width="6%" class="heading">S. #</th>
+					<th width="15%" class="heading">Full Name</th>
+					<th width="10%" class="heading">Role</th>
+					<th width="15%" class="heading">Last Login</th>
+					<th width="14%" class="heading">Account Status</th>
+					<th width="12%" class="heading align-middle text-center">Options</th>
+				</tr>
+			</thead>
+
+			{% if object_list %}
+				<tbody>         
+					{% for user in object_list %}
+						<tr>
+							<td>
+								{{ forloop.counter }}              
+							</td>
+							<td>
+								{% if user.get_full_name %}
+									{{ user.get_full_name }}              
+								{% else %}
+									{{user.username}}
+								{% endif %}
+							</td>
+							<td>
+								{% if user.is_superuser %}
+									Super User              
+								{% elif user.is_staff %}
+									Staff User
+								{% else %}
+									Simple User
+								{% endif %}
+							</td>
+							<td>
+								{{ user.last_login }}              
+							</td>
+							{% if user.is_active %}
+								<td class="text-success">
+									<i class="fas fa-check-circle me-1"></i>Active
+								</td>
+							{% else %}
+								<td class="text-danger">
+									<i class="fas fa-times-circle me-1"></i>Suspended
+								</td>
+							{% endif %}
+							<td class="align-middle text-center">
+								<!-- <a href="#" class="btn small-btn add-more-btn" title="Edit user">
+									<i class="fas fa-edit"></i>
+								</a> -->
+								{% if not user.is_active %}
+									<a href="{% url 'users:activate-user' user.username %}" class="btn btn-outline-success small-btn" title="Activate user account">
+										<i class="fas fa-user-check"></i>
+									</a>
+								{% else %}
+									<a href="{% url 'users:suspend-user' user.username %}" class="btn btn-outline-danger small-btn" title="Suspend user account">
+										<i class="fas fa-ban"></i>
+									</a>
+								{% endif %}
+	                    	</td>          
+	                	</tr>
+	                {% endfor %}                   
+	            </tbody>
+	        	</table>  
+		        <div class="align-middle text-center">
+		        	{% if is_paginated %}
+
+		        	{% if page_obj.has_previous %}
+			        	<a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
+			        	<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+		        	{% endif %}
+
+		        	{% for num in page_obj.paginator.page_range %}
+		        	{% if page_obj.number == num %}
+		        		<a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+		        	{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+		        		<a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+		        	{% endif %}
+		        	{% endfor %}
+
+		        	{% if page_obj.has_next %}
+			        	<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+			        	<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+		        	{% endif %}
+
+		        	{% endif %}
+		        </div>
+	        {% else %}
+	        	<tbody></tbody>   
+	    		</table>
+			    <br><br><br>
+			    <div style="color: #008CFF; font-style: bold; font-size: 1rem; text-align: center;">
+			    	Sorry, No user exist in the system! 
+			    </div>
+	    	{% endif %}
+	</div>
+{% endblock %}

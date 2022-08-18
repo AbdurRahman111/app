@@ -1,0 +1,280 @@
+{% extends 'base.html' %}
+{% load html_tags %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+	<div class="card shadow border-0 p-3">
+		<form method="post" enctype='multipart/form-data'>
+			{% csrf_token %}
+			<!-- Forms meta data for email experiment groups -->
+	        <input type="hidden" name="experiment_form-TOTAL_FORMS" value="2" id="id_experiment_form-TOTAL_FORMS">
+	        <input type="hidden" name="experiment_form-INITIAL_FORMS" value="0" id="id_experiment_form-INITIAL_FORMS">
+	        <input type="hidden" name="experiment_form-MIN_NUM_FORMS" value="0" id="id_experiment_form-MIN_NUM_FORMS">
+	        <input type="hidden" name="experiment_form-MAX_NUM_FORMS" value="1000" id="id_experiment_form-MAX_NUM_FORMS">
+	        <div class="row form-row mt-3">
+	            <div class="form-group col-md-6">
+	                <label class="panel-body-text">Experiment Name:<span style="color: red; font-weight: bold;">*</span></label>
+	                <input type="text" name="experiment-name" class="form-control textinput" required placeholder="Enter the name of experiment">
+	            </div>
+	            <div class="form-group col-md-6">
+	                <label class="panel-body-text">Hypothesis:<span style="color: red; font-weight: bold;">*</span></label>
+	                <textarea name="experiment-hypothesis" class="form-control textinput" required placeholder="Enter Hypothesis being tested, defining group A and B"></textarea>
+	            </div>
+	        </div>
+	        {% if type == 'Email' %}
+		        <div class="row form-row mt-3">
+		            <div class="form-group col-md-6">
+		                <label class="panel-body-text">Sender Email:<span style="color: red; font-weight: bold;">*</span></label>
+		                <input type="text" name="sender-email" class="form-control textinput" required placeholder="Enter sender email address">
+		            </div>
+		            <div class="form-group col-md-6">
+		                <label class="panel-body-text">Email Subject:<span style="color: red; font-weight: bold;">*</span></label>
+		                <input type="text" name="sender-email-subject" class="form-control textinput" required placeholder="Enter email subject">
+		            </div>
+		        </div>
+	        {% endif %}
+	        <h3 class="mt-5">{{heading}}</h3>
+	        {% if type == 'Email' %}
+		    	<div class="question-area experiment" style="border-radius: 15px;">
+		        	<div class="row js clone-row">
+		        		<div class="col-md-8">
+			        		<div class="row form-row">
+			        			<div class="col-md-9">
+				        			<div class="input-file-container">  
+										<input class="input-file" id="id_form-0-email-experiment-template-file" name="id_form-0-email-experiment-template-file" type="file" onchange="fileNameBox(this)">
+										<label tabindex="0" for="id_form-0-email-experiment-template-file" class="input-file-trigger">
+											Upload Email Body For Group A
+										</label>
+									</div>
+									<p class="file-return" id="id_form-0-email-experiment-template-file-tooltip" for="id_form-0-email-experiment-template-file">\
+										Target or landing page url
+									</p>
+				        		</div>
+				        		<div class="col-md-3">
+				        			<div class="form-check">
+									  	<input class="form-check-input" type="radio" name="id_form-0-email-experiment-upload-file-type" id="id_form-0-email-experiment-radio1" required value="Plain Text">
+									  	<label class="form-check-label" for="id_form-0-email-experiment-radio1">
+									    	Plain text with links
+									  	</label>
+									</div>
+									<div class="form-check">
+										<input class="form-check-input" type="radio" name="id_form-0-email-experiment-upload-file-type" id="id_form-0-email-experiment-radio2" required value="HTML Template">
+										<label class="form-check-label" for="id_form-0-email-experiment-radio2">
+											HTML Source
+										</label>
+									</div>
+				        		</div>	
+			        		</div>
+			        	</div>	
+		        	</div>
+
+		        	<div class="row js clone-row">
+		        		<div class="col-md-8">
+			        		<div class="row form-row">
+			        			<div class="col-md-9">
+				        			<div class="input-file-container">  
+										<input class="input-file" id="id_form-1-email-experiment-template-file" name="id_form-1-email-experiment-template-file" type="file" onchange="fileNameBox(this)">
+										<label tabindex="1" for="id_form-1-email-experiment-template-file" class="input-file-trigger filelabel">
+											Upload Email Body For Group B
+										</label>
+									</div>
+									<p class="file-return" id="id_form-1-email-experiment-template-file-tooltip" for="id_form-1-email-experiment-template-file">\
+										Target or landing page url
+									</p>
+				        		</div>
+				        		<div class="col-md-3">
+				        			<div class="form-check">
+									  	<input class="form-check-input" type="radio" name="id_form-1-email-experiment-upload-file-type" id="id_form-1-email-experiment-radio1" required value="Plain Text">
+									  	<label class="form-check-label" for="id_form-1-email-experiment-radio1">
+									    	Plain text with links
+									  	</label>
+									</div>
+									<div class="form-check">
+										<input class="form-check-input" type="radio" name="id_form-1-email-experiment-upload-file-type" id="id_form-1-email-experiment-radio2" required value="HTML Source">
+										<label class="form-check-label" for="id_form-1-email-experiment-radio2">
+											HTML Source
+										</label>
+									</div>
+				        		</div>	
+			        		</div>
+			        	</div>	
+		        	</div>
+		        	
+		        	<div class="mt-4">
+		        		<div class="col-md-12 mb-4">
+		        			<a href="#" class="add-form-row btn add-more-btn">Add More Groups</a>	
+		        		</div>
+					    <button class="btn add-more-btn" type="submit">Save Groups</button>
+					</div>
+		       	</div>
+		    {% elif type == 'Display' %}
+		      	<div class="question-area experiment" style="border-radius: 15px;">
+		        	<div class="row js clone-row">
+		        		<div class="col-md-6">
+		        			<div class="input-file-container">  
+								    <input class="input-file" id="id_form-0-email-experiment-template-file" name="id_form-0-email-experiment-template-file" type="file" onchange="fileNameBox(this)">
+								    <label tabindex="0" for="id_form-0-email-experiment-template-file" class="input-file-trigger">
+								    	Upload Test Banner Image For Group A
+								    </label>
+								  </div>
+								  <p class="file-return" id="id_form-0-email-experiment-template-file-tooltip" for="id_form-0-email-experiment-template-file">Target or landing page url</p>
+			        	</div>
+			        	<div class="col-md-6 banner">
+			        		<img id="id_form-0-email-experiment-template-file-image" src="#" alt="" class="banner-img" />
+			        	</div>
+		        	</div>
+
+		        	<div class="row js clone-row mt-3">
+		        		<div class="col-md-6">
+		        			<div class="input-file-container">  
+								    <input class="input-file" id="id_form-1-email-experiment-template-file" name="id_form-1-email-experiment-template-file" type="file" onchange="fileNameBox(this)">
+								    <label tabindex="1" for="id_form-1-email-experiment-template-file" class="input-file-trigger filelabel">
+								    	Upload Control Banner Image For Group B
+								    </label>
+								  </div>
+								  <p class="file-return" id="id_form-1-email-experiment-template-file-tooltip" for="id_form-1-email-experiment-template-file">
+								  	Target or landing page url
+								  </p>
+			        	</div>
+			        	<div class="col-md-6 banner">
+			        		<img id="id_form-1-email-experiment-template-file-image" src="#" alt="" class="banner-img" />
+			        	</div>
+		        	</div>
+		        	
+		        	<div class="mt-4">
+		        		<div class="col-md-12 mb-4">
+		        			<a href="#" class="add-form-row btn add-more-btn">Add More Groups</a>	
+		        		</div>
+					    <button class="btn add-more-btn" type="submit">Save Groups</button>
+					</div>
+			    </div>
+		      {% endif %}
+		</form>
+	</div>
+{% endblock %}
+
+{% block scripts %}
+	<script>
+		var $j = jQuery.noConflict();
+		var label_id = 'id_form-1-email-experiment-template-file'
+		// Cloning form field
+		function cloneMore(selector, prefix) {
+		    var newElement = $j(selector).clone(true);
+		    var total = $j('#id_experiment_' + prefix + '-TOTAL_FORMS').val();
+		    newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
+		        var name = $j(this).attr('name')
+		        if(name) {
+		            name = name.replace('-' + (total-1) + '-', '-' + total + '-');
+		            console.log('Name 2: '+name)
+		            var id = name;
+		            $j(this).attr({'name': name, 'id': id});
+		            if($j(this).attr('type') == 'text'){
+		            	$j(this).val('');
+		            }
+		            else if($j(this).attr('type') == 'file'){
+		            	$j(this).val(null);
+		            }
+		            else if($j(this).attr('type') == 'radio'){
+		            	$j(this).attr('checked',false);
+		            }
+		            else{
+		            	$j(this).reset();
+		            }
+		        }
+		    });
+		    newElement.find('label').each(function() {
+		        var forValue = $j(this).attr('for');
+		        $j(this).attr('tabindex', total);
+		        var tabIndex = $j(this).attr('tabindex');
+		        console.log('Tab Index: '+tabIndex);
+		        if (forValue) {
+		            forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+		            $j(this).attr({'for': forValue});
+		            console.log('This label: '+$j(this).attr('for')+'    This is id: '+(total));
+		        }
+		        if ($j(this).hasClass('filelabel')){
+			        $j(this).html('Upload Email Body For Group B'+(total-1));		        	
+		        }
+		    });
+		    newElement.find('p').each(function() {
+		        var forValue = $j(this).attr('for');
+		        $j(this).attr('tabindex', total);
+		        var tabIndex = $j(this).attr('tabindex');
+		        if (forValue) {
+		            forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+		            $j(this).attr({'id': forValue});
+		            $j(this).html('\ Target or landing page url ')
+		        }
+		    });
+		    newElement.find('img').each(function() {
+		        var forValue = $j(this).attr('id');
+		        if (forValue) {
+		            forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+		            $j(this).attr({'id': forValue});
+		            $j(this).attr('src', '')
+		        }
+		    });
+		    newElement.find('label').each(function(){
+		    	var forValue = $j(this).attr('id');
+		    	if (forValue){
+		    		forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+		    		$j(this).attr({'id': forValue});
+		    		$j(this).text('Target or landing page url');
+		    	}
+		    });
+		    total++;
+		    $j('#id_experiment_' + prefix + '-TOTAL_FORMS').val(total);
+		    $j(selector).after(newElement);
+		    return false;
+		}
+		    
+		$j(document).on('click', '.add-form-row', function(e){
+		    e.preventDefault();
+		    cloneMore('.clone-row:last', 'form');
+		    return false;
+		});
+
+		// File upload handling
+		var fileInput  = document.querySelector( ".input-file" ),  
+    	button     = document.querySelector( ".input-file-trigger" ),
+    	the_return = document.querySelector(".file-return"),
+    	render_box = document.querySelector(".file_render_section")
+    
+		button.addEventListener( "keydown", function( event ) {  
+		    if ( event.keyCode == 13 || event.keyCode == 32 ) {  
+		      fileInput.focus();  
+		    }
+		});
+
+		button.addEventListener( "click", function( event ) {
+		   fileInput.focus();
+		   return false;
+		});
+
+		function fileNameBox(elem) {
+			var id = elem.id;
+			console.log('Id: '+id)
+			$j('#' + id + '-tooltip').text(elem.files[0].name);
+			{% if type == 'Display' %}
+				$j('#' + id + '-image').attr('src', URL.createObjectURL(elem.files[0]));
+			{% endif %}
+		    // the_return.innerHTML = this.files[0].name;
+		    // rendering uploaded file
+		    file_name = elem.value;
+		    console.log(file_name);
+			// $j.ajax({
+			// 	url: `{% url 'experiment:file-rendering' %}`, // point to server-side URL
+			// 	dataType: 'json', // what to expect back from server
+			// 	data: {"file_path": file_name},
+			// 	type: 'get',
+			// 	success: function (response) { // display success response
+			// 		if(response.success==false){
+			// 			console.log('error');
+			// 			console.log(response.message);
+			// 		} else {
+			// 			console.log(response)
+			// 		}
+			// 	}
+			// });
+		};
+	</script>
+{% endblock %}

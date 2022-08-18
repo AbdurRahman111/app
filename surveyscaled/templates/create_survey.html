@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% block title %}{{page_title}}{% endblock %}
+{% block content %}
+	<div class="card shadow border-0" style="width: 100%; padding: 15px;">
+		<div class="row" style="color: #008CFF; font-weight: bold; font-size: 1.3rem; padding-bottom: 5px;">
+			<div class="col-md-8" style="align-self: end;">Create New Survey</div>
+			<div class="col-md-4">
+				
+			</div>
+		</div>
+		<div style="border-bottom: 2px solid #008CFF;"></div>
+		<br>
+		<form method="post">
+			{% csrf_token %}
+			<!-- Fields for handling dynamic form rendering -->
+			<input type="hidden" name="form-TOTAL_FORMS" value="1" id="id_form-TOTAL_FORMS">
+			<input type="hidden" name="form-INITIAL_FORMS" value="0" id="id_form-INITIAL_FORMS">
+			<input type="hidden" name="form-MIN_NUM_FORMS" value="0" id="id_form-MIN_NUM_FORMS">
+			<input type="hidden" name="form-MAX_NUM_FORMS" value="1000" id="id_form-MAX_NUM_FORMS">
+			<!-- Survey Details Sections -->
+			<div class="row form-row mt-4">
+				<div class="form-group col-md-6">
+					<label class="panel-body-text">Survey Name:<span style="color: red; font-weight: bold;">*</span></label>
+					<input type="text" name="survey_name" class="form-control textinput" placeholder="Enter the name of survey" required>
+				</div>
+				<div class="form-group col-md-6">
+					<label class="panel-body-text">Survey Purpose:<span style="color: red; font-weight: bold;">*</span></label>
+					<textarea name="survey_purpose" class="form-control textinput" required></textarea>
+				</div>
+			</div>
+			<br>
+			<!-- Questionaire Details Section -->
+			<div class="row" style="color: #008CFF; font-weight: bold; font-size: 1.3rem; padding-bottom: 5px;">
+				<div class="col-md-8" style="align-self: end;">Questionaire Section</div>
+			</div>
+			<div class="mt-2">
+				<div class="row form-row question-container">
+					<div class="form-group col-md-4 mb-3">
+						<label class="panel-body-text">Question Number:<span style="color: red; font-weight: bold;">*</span></label>
+						<input type="text" id="id_form-0-question_no" name="form-0-question_no" class="form-control textinput" placeholder="1 or 1.a question 1" required>
+					</div>
+					<div class="form-group col-md-8 mb-3">
+						<label class="panel-body-text">Question Statement:<span style="color: red; font-weight: bold;">*</span></label>
+						<input type="text" id="id_form-0-question_statement" name="form-0-question_statement" class="form-control textinput" placeholder="Enter question statement" required>
+					</div>
+					<div class="form-group col-md-12 mb-3">
+						<label class="panel-body-text">Question Type:<span style="color: red; font-weight: bold;">*</span></label>
+						<select class="form-select" aria-label="Question type selection" id="form-0-question_type" name="form-0-question_type" onchange="addExtraoptions(this)" required>
+						  <option selected>Select survey question type</option>
+						  <option value="Yes/No Question">Yes/No Question</option>
+						  <option value="Scaled Question">Scaled Question</option>
+						  <option value="Scaled Question - Customer Satisfaction Survey">Scaled Question - Customer Satisfaction Survey</option>
+						  <option value="Scaled Question - Net Promoter Survey">Scaled Question - Net Promoter Survey</option>
+						  <option value="Multiple Choices - Select One Answer">Multiple Choices - Select One Answer</option>
+						  <option value="Multiple Choices - Select All That Applies">Multiple Choices - Select All That Applies</option>
+						  <option value="Free Form">Free Form</option>
+						</select>
+						<select class="form-select hidden scale-type mt-3" aria-label="Scaled question scale" id="form-0-scaled_question_scale" name="form-0-scaled_question_scale" onchange="addExtraoptions(this)">
+						  <option selected>Select scale type</option>
+						  <option value="1-10">Scale 1 - 10</option>
+						  <option value="1-5">Scale 1 - 5</option>
+						  <option value="1-4">Scale 1 - 4</option>
+						</select>
+					</div>
+					<div class="form-group col-md-12 mb-3 answers-count hidden">
+						<label class="panel-body-text">Number of Answers:<span style="color: red; font-weight: bold;">*</span></label>
+						<input type="number" id="id_form-0-number_of_answers" name="form-0-number_of_answers" class="form-control textinput" placeholder="How many answers do you want to create for this question?" onchange="createAnswers(this)">
+					</div>
+					<div class="form-group col-md-12 mb-3">
+						<div style="border-bottom: 1px solid #ced4da;"></div>
+					</div>
+				</div>
+				<div class="mt-2">                    
+	                <a href="#" class="add-form-row btn add-more-btn">Add More Questions</a>
+	                <button class="ms-4 btn add-more-btn" type="submit">Save Survey</button>
+	            </div>
+			</div>
+			
+		</form>
+	</div>
+{% endblock %}
+
+{% block scripts %}
+	<script>
+		// Cloning form field
+		function cloneMore(selector, prefix) {
+		    var newElement = $(selector).clone(true);
+		    // Making sure that answers count element is hidden in the new cloned question element 
+		    if (newElement.find('.answers-count').length) {
+			    newElement.children('.answers-count').addClass('hidden');
+			    // Making sure that answers container element is removed in the new cloned question element 
+			    newElement.children('.answers-container').remove();
+			}
+			// Making sure that scale type element is hidden in the new cloned question element 
+			if (newElement.find('.scale-type').length) {
+				newElement.find('.scale-type').addClass('hidden');
+			}
+
+		    var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+		    newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
+		        var name = $(this).attr('name')
+		        if(name) {
+		            name = name.replace('-' + (total-1) + '-', '-' + total + '-');
+		            var id = 'id_' + name;
+		            // Checking if element is html select
+		            if($(this).prop('type') == 'select-one'){
+		            	// Element is select, so don't assign empty value
+		            	$(this).attr({'name': name, 'id': id}).removeAttr('checked');
+		            }
+		            else{
+		            	// Element is not select, so assign empty value
+		            	$(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+		            }
+		            
+		        }
+		    });
+		    newElement.find('label').each(function() {
+		        var forValue = $(this).attr('for');
+		        if (forValue) {
+		            forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+		            $(this).attr({'for': forValue});
+		        }
+		    });
+		    total++;
+		    $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+		    $(selector).after(newElement);
+		    return false;
+		}
+		    
+		$(document).on('click', '.add-form-row', function(e){
+		    e.preventDefault();
+		    cloneMore('.question-container:last', 'form');
+		    return false;
+		});
+
+		// Creating new fields according to question type selection
+		function addExtraoptions(elem) {
+			if (elem.value == 'Scaled Question'){
+				// Checking if section for adding number of answers for a question is active or not
+				if (!elem.parentNode.nextElementSibling.classList.contains('hidden')){
+					elem.parentNode.nextElementSibling.classList.add('hidden');
+				}
+				// Removing class to allow user to add amount of answers for the question
+				elem.nextElementSibling.classList.remove('hidden');
+			}
+			else if (elem.value == 'Multiple Choices - Select One Answer' || elem.value == 'Multiple Choices - Select All That Applies') {
+				// Checking if options for scaled type are visible or not
+				if (!elem.nextElementSibling.classList.contains('hidden')){
+					elem.nextElementSibling.classList.add('hidden');
+				}
+				// Removing class to make scaled type element visible for the current question
+				elem.parentNode.nextElementSibling.classList.remove('hidden');
+			}
+			else {
+				elem.parentNode.nextElementSibling.classList.add('hidden');
+			}
+			
+		}
+
+		function createAnswers(element) {
+			// Creating new parent div to hold all the input fields for creating answers for the question
+			var answersDiv = document.createElement('div');
+			answersDiv.classList.add('form-group', 'col-md-12', 'mb-3', 'answers-container');
+			var fields = element.getAttribute('name').split('-');
+			// Loop to add input fields according to value added by user for number of answers
+			for (var x=0; x < element.value; x++){
+				answersDiv.innerHTML += `<input type="text" id="id_form-${fields[1]}-questions_answer_${x}" name="form-${fields[1]}-questions_answer_${x}" class="form-control textinput mb-3 answers-input-field" placeholder="Enter answer fot the question" required>`;
+			};
+			// Inserting new element after current element
+			element.parentNode.parentNode.insertBefore(answersDiv, element.parentNode.nextElementSibling);
+		}
+	</script>
+{% endblock %}

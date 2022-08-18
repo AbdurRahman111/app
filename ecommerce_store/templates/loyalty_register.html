@@ -1,0 +1,55 @@
+{% extends "ecommerce_base.html" %}
+{% load static %}
+{% block title%}Loyalty Register{% endblock %}
+
+{% block body %}
+
+<style>
+#line{
+    text-decoration-line: underline;
+    text-underline-offset: 6px;
+}
+</style>
+
+
+  <section class="vh-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card shadow-2-strong" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+
+              <h3 class="font-weight-bold" id="line">Loyalty Program</h3>
+              <h5 class="mb-5 ">Get Discount Coupon Code !!</h5>
+
+              <form action="{% url 'submit_loyalty_info' %}" method="POST">
+                {% csrf_token %}
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                  <label class="" for="form1Example1">Full Name</label>
+                  <input name="full_name" value="{{request.session.full_name}}" type="text" id="form1Example1" class="boder form-control border border-success form-control-lg" required/>
+                </div>
+                <div class="form-outline mb-4">
+                  <label class="" for="form1Example2">Email address</label>
+                  <input name="loyalty_email" value="{{request.session.email}}" type="email" id="form1Example2" class="boder form-control border border-success form-control-lg" required/>
+                </div>
+                <div class="form-outline mb-4">
+                  <label class="" for="form1Example3">Phone Number</label>
+                  <input name="loyalty_phone" value="{{request.session.phone_number}}" type="text" id="form1Example3" class="boder form-control border border-success form-control-lg" required/>
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-lg btn-block w-100">Continue</button>
+
+
+              </form>
+
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,158 @@
+Formula's
+
+"conversion rate=(sum of experiment_response_convert)/count(^)
+calculated and group by 
+experiment_group
+
+Other metric:-
+
+for formula: conversion rate=(average of experiment_metric_value)  
+calculated group by 
+experiment_metric_name and 
+experiment_group
+
+Other metric:
+
+for formula: other metrics=(average of experiment_metric_value)
+calculated group by
+experiment_metric_name and
+experiment_group"
+
+"for plot overtime you can convert response_datetime into week ending date (ie one date for the whole week using end of week date) the group metric or conversion by "group by  week_ending_date, experiment_group" and "group by  week_ending_date,experiment_metric_name, experiment_group" these will help plot overtime of responses"
+
+For time series metrics the calculations should be cumulative ie sum or avaeage from start to that particular week ending date for each week ending date
+
+
+Calculation of metrics  by overall:
+================================
+SELECT experiment_group,
+experiment_metric_name,
+experiment_launch_date ,
+SUM(experiment_response_click)
+SUM(experiment_response_view)
+SUM(experiment_response_convert)
+SUM(experiment_metric_value)
+from experiment table
+group by experiment_group
+experiment_metric_name,
+experiment_launch_date 
+
+
+Calculation of metricvariation by overall:
+================================
+Calculation of metrics variation  by week:
+========================================
+1. for each  metric name: calculate difference between metrics before launch date vs after launch date
+2, for each metric name calculate difference between alternative group (B) metric and baseline group(B) metrics
+
+
+
+
+
+Calculation of metrics  by week:
+================================
+SELECT week_ending(as extracted from response_datetime),
+experiment_metric_name,
+experiment_launch_date ,
+experiment_group,
+SUM(experiment_response_click)
+SUM(experiment_response_view)
+SUM(experiment_response_convert)
+SUM(experiment_metric_value)
+from experiment table
+group by week_ending(as extracted from response_datetime),
+experiment_metric_name,
+experiment_launch_date ,
+experiment_group
+
+
+Calculation of metrics variation  by week:
+========================================
+1. for each week and metric name: calculate difference between metrics before launch date vs after launch date
+2, for each metric name and week calculate difference between alternative group (B) metric and baseline group(B) metrics
+
+
+Calculation of metrics  by overall:
+================================
+SELECT experiment_group,
+experiment_metric_name,
+experiment_launch_date ,
+SUM(experiment_response_click)
+SUM(experiment_response_view)
+SUM(experiment_response_convert)
+SUM(experiment_metric_value)
+from experiment table
+group by experiment_group
+experiment_metric_name,
+experiment_launch_date 
+
+
+Calculation of metricvariation by overall:
+================================
+
+
+1. for each  metric name: calculate difference between metrics before launch date vs after launch date
+2, for each metric name calculate difference between alternative group (B) metric and baseline group(B) metrics
+
+
+
+
+
+Calculation of metrics  by week:
+================================
+SELECT week_ending(as extracted from response_datetime),
+experiment_metric_name,
+experiment_launch_date ,
+experiment_group,
+SUM(experiment_response_click)
+SUM(experiment_response_view)
+SUM(experiment_response_convert)
+SUM(experiment_metric_value)
+from experiment table
+group by week_ending(as extracted from response_datetime),
+experiment_metric_name,
+experiment_launch_date ,
+experiment_group
+
+
+Calculation of metrics variation  by week:
+========================================
+1. for each week and metric name: calculate difference between metrics before launch date vs after launch date
+2, for each metric name and week calculate difference between alternative group (B) metric and baseline group(B) metrics
+
+
+so basically 
+Before launch = (response_datetime < experiment_launch_date)
+
+and 
+after launch = (response_datetime > experiment_launch_date)
+
+
+experiment_response_click for total number of visits
+
+
+
+
+
+
+
+Some things to update
+
+(3) on page http://localhost:8000/media-scaled/experiment_list
+list should be the main contain on page then when clicked show a pop up form to fill out campaign information - campaign info should be separated for email and for display, since user can use one or more (ie email+display, display only or email only) and within display they can do Facebook and Google ads Google ads only or Facebook ads only.
+
+workflow: (a) create experiment+save info, (b) list experiments for user to edit or view, (c) create campaign (email, display or email and display), (d) if email then user provides info on email campaign including email provider configuration, save then  execute email campaign. if display then user provides info on display campaign including display provider configuration, save then  execute display  campaign (NOTE; for display it depend on if both are requested by selecting both or only one requested then campaign i to be sent to the selected)
+
+
+8) Please provide deployment scripts - Docker file, deployment is in AWS Beanstalk
+
+(10) S3 bucket, folders and file naming conventions:
+- data version; date a new data is uploaded (have different every time new data is loaded), the format is YYYY_MM_DD
+- AWS bucket= company_id
+- folder under company bucket to store survey subscription data:
+    s3;//<company_id>/<subscription_id>/staging/<data_version>/surveys
+ - folder under company bucket to store experiments subscription data:
+    s3;//<company_id>/<subscription_id>/staging/<data_version>/experiments
+
+    - All uploaded files are to be stored under these formatted folders.
+- When a created survey or a created experiment is closed then consider the event as a data upload event, create file in same format as uploaded file that has the date for survey or experiment executed from this platform. This is required to enable machine learning in the same way from created as well as uploded files.

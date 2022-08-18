@@ -1,0 +1,626 @@
+{% load static %}
+{% load app_7_custom_tags %}
+
+
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+	<!-- Mobile Specific Meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Favicon-->
+	<link rel="shortcut icon" href="{% static '' %}landing_page_seven/img/fav.png">
+	<!-- Author Meta -->
+	<meta name="author" content="CodePixar">
+	<!-- Meta Description -->
+	<meta name="description" content="">
+	<!-- Meta Keyword -->
+	<meta name="keywords" content="">
+	<!-- meta character set -->
+	<meta charset="UTF-8">
+	<!-- Site Title -->
+	<title>Karma Shop</title>
+
+	<!--
+		CSS
+		============================================= -->
+	<link rel="stylesheet" href="{% static '' %}landing_page_seven/css/linearicons.css">
+	<link rel="stylesheet" href="{% static '' %}landing_page_seven/css/owl.carousel.css">
+	<link rel="stylesheet" href="{% static '' %}landing_page_seven/css/themify-icons.css">
+	<link rel="stylesheet" href="{% static '' %}landing_page_seven/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{% static '' %}landing_page_seven/css/nice-select.css">
+	<link rel="stylesheet" href="{% static '' %}landing_page_seven/css/nouislider.min.css">
+	<link rel="stylesheet" href="{% static '' %}landing_page_seven/css/bootstrap.css">
+	<link rel="stylesheet" href="{% static '' %}landing_page_seven/css/main.css">
+
+<style>
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+
+</style>
+
+<style>
+
+.bg3 {
+    background-color: #222;
+}
+
+
+.p-b-32, .p-tb-32, .p-all-32 {
+    padding-bottom: 32px;
+}
+
+.p-t-75, .p-tb-75, .p-all-75 {
+    padding-top: 75px;
+}
+
+
+article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
+    display: block;
+}
+
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+</style>
+
+
+<style>
+
+
+
+.Placeholder_Text_style {
+
+  pointer-events: none;
+  position:absolute;
+  left:37px;
+  top:13px;
+  transition: 0.2s;
+  transition-timing-function: ease;
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  opacity:0.5;
+}
+
+input:focus + span, input:not(:placeholder-shown) + span {
+  opacity:1;
+  transform: scale(0.75) translateY(-100%) translateX(-30px);
+}
+
+/* For IE Browsers*/
+input:focus + span, input:not(:-ms-input-placeholder) + span {
+  opacity:1;
+  transform: scale(0.75) translateY(-100%) translateX(-30px);
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #6EF8EB;">
+        <a class="navbar-brand" href="{% url 'landing_page_seven' %}">
+        <img src="{% get_last_logo_app7 %}" style="height:60px; width:auto;" alt="">
+      </a>
+
+  <a class="navbar-brand" href="{% url 'landing_page_seven' %}">Download Landing page</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'landing_page_seven' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+	<!--================Login Box Area =================-->
+	<section class="login_box_area ">
+		<div class="container">
+			{% if get_left.Model_full_image %}
+			<div class="row" style="background: url({{get_left.Model_full_image.url}}) no-repeat center fixed;
+    -webkit-background-size: cover; min-height: 800px;">
+				{%  else %}
+				<div class="row" >
+			{%  endif %}
+
+
+					{% if c %}
+<div class="col-lg-9" >
+					<div class="login_box_img" style="margin-top: 10px;text-align: center;margin-top: 88px;">
+
+						{% if get_left.Model_left_content_top  %}
+						<div style="color: #001fff;">We have sent a  download link to your Email of The below Product</div><br><br>
+
+							<div >
+
+
+								{% if get_left.Model_content_image  %}
+								<img src="{{get_left.Model_content_image.url}}" style="width: 50%;">
+								{% endif %}
+<br><br>
+								Feature of this product are <br>
+								{{get_left.Model_left_content_bottom | safe }}
+
+
+							</div>
+
+						{% endif %}
+
+					</div>
+
+				</div>
+				<div class="col-lg-3" >
+					<div class="login_form_inner" >
+
+
+<a href="{% url 'clear_seassion' %}" style="background-color: #3deb97;padding: 12px;border-radius: 23px;">Back To Download Page Again</a>
+
+					</div>
+				</div>
+
+
+					{%  else %}
+					<div class="col-lg-9" >
+					<div class="login_box_img" style="margin-top: 10px;text-align: center;margin-top: 138px;">
+
+						{% if get_left.Model_left_content_top  %}
+
+							<div >
+								{{get_left.Model_left_content_top | safe }}
+
+								{% if get_left.Model_content_image  %}
+								<img src="{{get_left.Model_content_image.url}}" style="width: 50%;">
+								{% endif %}
+
+								{{get_left.Model_left_content_bottom | safe }}
+							</div>
+
+						{% endif %}
+
+					</div>
+
+				</div>
+				<div class="col-lg-3" style="height: 550px;">
+					<div class="login_form_inner" style="box-shadow: 0px 10px 30px 0px rgb(0 0 0 / 7%); height: 100%;  text-align: center; padding-top: 46px; margin-top: 155px; background-color: #45bdaaa6;border-radius: 54px;">
+						<h3 class="" style="background-color: #6aacb5;">Sign Up</h3>
+<div style="color: yellow;margin-bottom: 5px;margin-top: -29px;">Fill out this form to download a free copy of the Complete CRM Handbook.</div>
+						{% for message in messages %}<br>
+						  <div class="col-md-12 form-group primary-btn" style="width: 86%;font-size: 13px;">{{ message }}</div>
+						{% endfor %}
+
+						<form class="row login_form" action="{% url 'download_file' %}" method="POST"  >
+							{% csrf_token %}
+
+							<div class="col-md-12 form-group">
+
+
+								<label style="width: 100%;">
+									<input type="text" class="form-control" id="id_First_Name" name="name_First_Name" placeholder=" " required />
+									<span class="Placeholder_Text_style">First Name</span>
+								</label>
+							</div>
+							<div class="col-md-12 form-group" style="margin-bottom: -1px;">
+								<label style="width: 100%;">
+									<input type="text" class="form-control" id="id_Last_Name" name="name_Last_Name" placeholder=" "  required />
+									<span class="Placeholder_Text_style">Last Name</span>
+								</label>
+							</div>
+							<div class="col-md-12 form-group" id="mass"></div>
+							<div class="col-md-12 form-group">
+
+								<label style="width: 100%;">
+									<input type="email" class="form-control" id="id_Email_Address"   name="name_Email_Address" placeholder=" "  required />
+									<span class="Placeholder_Text_style">Email Address</span>
+								</label>
+							</div>
+							<div class="col-md-12 form-group">
+
+								<select id="CompanyCountry-qT1j" name="CompanyCountry" aria-required="true" required="true" style="width: 100%;height: 54px;  border: none; border-bottom: 1px solid #cccccc;  border-radius: 0px; outline: none; box-shadow: none;padding-left: 19px;color: #cccccc;">
+                <option disabled="" label="Country/Region" selected="" value="">Country/Region</option>
+
+<option style="color: black;" value="AF">Afghanistan</option>
+
+									<option style="color: black;" value="AL">Albania</option>
+
+									<option style="color: black;" value="DZ">Algeria</option>
+
+									<option style="color: black;" value="AS">American Samoa</option>
+
+									<option style="color: black;" value="AD">Andorra</option>
+
+									<option style="color: black;" value="AI">Anguilla</option>
+
+									<option style="color: black;" value="AQ">Antarctica</option>
+
+									<option style="color: black;" value="AG">Antigua And Barbuda</option>
+
+									<option style="color: black;" value="AR">Argentina</option>
+									<option style="color: black;" value="AM">Armenia</option>
+									<option style="color: black;" value="AW">Aruba</option>
+									<option style="color: black;" value="AU">Australia</option>
+									<option style="color: black;" value="AT">Austria</option>
+									<option style="color: black;" value="AZ">Azerbaijan</option>
+									<option style="color: black;" value="BS">Bahamas, The</option>
+									<option style="color: black;" value="BH">Bahrain</option>
+									<option style="color: black;" value="BD">Bangladesh</option>
+									<option style="color: black;" value="BB">Barbados</option>
+									<option style="color: black;" value="BY">Belarus</option>
+									<option style="color: black;" value="BZ">Belize</option>
+									<option style="color: black;" value="BE">Belgium</option>
+									<option style="color: black;" value="BJ">Benin</option>
+									<option style="color: black;" value="BM">Bermuda</option>
+									<option style="color: black;" value="BT">Bhutan</option>
+									<option style="color: black;" value="BO">Bolivia</option>
+									<option style="color: black;" value="BV">Bouvet Is</option>
+									<option style="color: black;" value="BA">Bosnia and Herzegovina</option>
+									<option style="color: black;" value="BW">Botswana</option>
+									<option style="color: black;" value="BR">Brazil</option>
+									<option style="color: black;" value="IO">British Indian Ocean Territory</option>
+									<option style="color: black;" value="BN">Brunei</option>
+									<option style="color: black;" value="BG">Bulgaria</option>
+									<option style="color: black;" value="BF">Burkina Faso</option>
+									<option style="color: black;" value="BI">Burundi</option>
+									<option style="color: black;" value="KH">Cambodia</option>
+									<option style="color: black;" value="CM">Cameroon</option>
+									<option style="color: black;" value="CA">Canada</option>
+									<option style="color: black;" value="CV">Cape Verde</option>
+									<option style="color: black;" value="KY">Cayman Is</option>
+									<option style="color: black;" value="CF">Central African Republic</option>
+									<option style="color: black;" value="TD">Chad</option>
+									<option style="color: black;" value="CL">Chile</option>
+									<option style="color: black;" value="CN">China</option>
+									<option style="color: black;" value="HK">Hong Kong</option>
+									<option style="color: black;" value="MO">Macau</option>
+									<option style="color: black;" value="CX">Christmas Is</option>
+									<option style="color: black;" value="CC">Cocos (Keeling) Is</option>
+									<option style="color: black;" value="CO">Colombia</option>
+									<option style="color: black;" value="KM">Comoros</option>
+									<option style="color: black;" value="CK">Cook Islands</option>
+									<option style="color: black;" value="CR">Costa Rica</option>
+									<option style="color: black;" value="CI">Cote D'Ivoire (Ivory Coast)</option>
+									<option style="color: black;" value="HR">Croatia (Hrvatska)</option>
+									<option style="color: black;" value="CY">Cyprus</option>
+									<option style="color: black;" value="CZ">Czech Republic</option>
+									<option style="color: black;" value="CD">Democratic Republic of the Congo</option>
+									<option style="color: black;" value="DK">Denmark</option>
+									<option style="color: black;" value="DM">Dominica</option>
+									<option style="color: black;" value="DO">Dominican Republic</option>
+									<option style="color: black;" value="DJ">Djibouti</option>
+									<option style="color: black;" value="EC">Ecuador</option>
+									<option style="color: black;" value="EG">Egypt</option>
+									<option style="color: black;" value="SV">El Salvador</option>
+									<option style="color: black;" value="GQ">Equatorial Guinea</option>
+									<option style="color: black;" value="ER">Eritrea</option>
+									<option style="color: black;" value="EE">Estonia</option>
+									<option style="color: black;" value="ET">Ethiopia</option>
+									<option style="color: black;" value="FK">Falkland Is (Is Malvinas)</option>
+									<option style="color: black;" value="FO">Faroe Islands</option>
+									<option style="color: black;" value="FJ">Fiji Islands</option>
+									<option style="color: black;" value="FI">Finland</option>
+									<option style="color: black;" value="FR">France</option>
+									<option style="color: black;" value="GF">French Guiana</option>
+									<option style="color: black;" value="PF">French Polynesia</option>
+									<option style="color: black;" value="TF">French Southern Territories</option>
+									<option style="color: black;" value="MK">F.Y.R.O. Macedonia</option>
+									<option style="color: black;" value="GA">Gabon</option>
+									<option style="color: black;" value="GM">Gambia, The</option>
+									<option style="color: black;" value="GE">Georgia</option>
+									<option style="color: black;" value="DE">Germany</option>
+									<option style="color: black;" value="GH">Ghana</option>
+									<option style="color: black;" value="GI">Gibraltar</option>
+									<option style="color: black;" value="GR">Greece</option>
+									<option style="color: black;" value="GL">Greenland</option>
+									<option style="color: black;" value="GD">Grenada</option>
+									<option style="color: black;" value="GP">Guadeloupe</option>
+									<option style="color: black;" value="GU">Guam</option>
+									<option style="color: black;" value="GT">Guatemala</option>
+									<option style="color: black;" value="GN">Guinea</option>
+									<option style="color: black;" value="GW">Guinea-Bissau</option>
+									<option style="color: black;" value="GY">Guyana</option>
+									<option style="color: black;" value="HT">Haiti</option>
+									<option style="color: black;" value="HM">Heard and McDonald Is</option>
+									<option style="color: black;" value="HN">Honduras</option>
+									<option style="color: black;" value="HU">Hungary</option>
+									<option style="color: black;" value="IS">Iceland</option>
+									<option style="color: black;" value="IN">India</option>
+									<option style="color: black;" value="ID">Indonesia</option>
+									<option style="color: black;" value="IE">Ireland</option>
+									<option style="color: black;" value="IL">Israel</option>
+									<option style="color: black;" value="IT">Italy</option>
+									<option style="color: black;" value="JM">Jamaica</option>
+									<option style="color: black;" value="JP">Japan</option>
+									<option style="color: black;" value="JO">Jordan</option>
+									<option style="color: black;" value="KZ">Kazakhstan</option>
+									<option style="color: black;" value="KE">Kenya</option>
+									<option style="color: black;" value="KI">Kiribati</option>
+									<option style="color: black;" value="KR">Korea, South</option>
+									<option style="color: black;" value="KW">Kuwait</option>
+									<option style="color: black;" value="KG">Kyrgyzstan</option>
+									<option style="color: black;" value="LA">Laos</option>
+									<option style="color: black;" value="LV">Latvia</option>
+									<option style="color: black;" value="LB">Lebanon</option>
+									<option style="color: black;" value="LS">Lesotho</option>
+									<option style="color: black;" value="LR">Liberia</option>
+									<option style="color: black;" value="LI">Liechtenstein</option>
+									<option style="color: black;" value="LT">Lithuania</option>
+									<option style="color: black;" value="LU">Luxembourg</option>
+									<option style="color: black;" value="MG">Madagascar</option>
+									<option style="color: black;" value="MW">Malawi</option>
+									<option style="color: black;" value="MY">Malaysia</option>
+									<option style="color: black;" value="MV">Maldives</option>
+									<option style="color: black;" value="ML">Mali</option>
+									<option style="color: black;" value="MT">Malta</option>
+									<option style="color: black;" value="MH">Marshall Is</option>
+									<option style="color: black;" value="MR">Mauritania</option>
+									<option style="color: black;" value="MU">Mauritius</option>
+									<option style="color: black;" value="MQ">Martinique</option>
+									<option style="color: black;" value="YT">Mayotte</option>
+									<option style="color: black;" value="MX">Mexico</option>
+									<option style="color: black;" value="FM">Micronesia</option>
+									<option style="color: black;" value="MD">Moldova</option>
+									<option style="color: black;" value="MC">Monaco</option>
+									<option style="color: black;" value="MN">Mongolia</option>
+									<option style="color: black;" value="MS">Montserrat</option>
+									<option style="color: black;" value="MA">Morocco</option>
+									<option style="color: black;" value="MZ">Mozambique</option>
+									<option style="color: black;" value="MM">Myanmar</option>
+									<option style="color: black;" value="NA">Namibia</option>
+									<option style="color: black;" value="NR">Nauru</option>
+									<option style="color: black;" value="NP">Nepal</option>
+									<option style="color: black;" value="NL">Netherlands, The</option>
+									<option style="color: black;" value="AN">Netherlands Antilles</option>
+									<option style="color: black;" value="NC">New Caledonia</option>
+									<option style="color: black;" value="NZ">New Zealand</option>
+									<option style="color: black;" value="NI">Nicaragua</option>
+									<option style="color: black;" value="NE">Niger</option>
+									<option style="color: black;" value="NG">Nigeria</option>
+									<option style="color: black;" value="NU">Niue</option>
+									<option style="color: black;" value="NO">Norway</option>
+									<option style="color: black;" value="NF">Norfolk Island</option>
+									<option style="color: black;" value="MP">Northern Mariana Is</option>
+									<option style="color: black;" value="OM">Oman</option>
+									<option style="color: black;" value="PK">Pakistan</option>
+									<option style="color: black;" value="PW">Palau</option>
+									<option style="color: black;" value="PA">Panama</option>
+									<option style="color: black;" value="PG">Papua new Guinea</option>
+									<option style="color: black;" value="PY">Paraguay</option>
+									<option style="color: black;" value="PE">Peru</option>
+									<option style="color: black;" value="PH">Philippines</option>
+									<option style="color: black;" value="PN">Pitcairn Island</option>
+									<option style="color: black;" value="PL">Poland</option>
+									<option style="color: black;" value="PT">Portugal</option>
+									<option style="color: black;" value="PR">Puerto Rico</option>
+									<option style="color: black;" value="QA">Qatar</option>
+									<option style="color: black;" value="CG">Republic of the Congo</option>
+									<option style="color: black;" value="RE">Reunion</option>
+									<option style="color: black;" value="RO">Romania</option>
+									<option style="color: black;" value="RU">Russia</option>
+									<option style="color: black;" value="RW">Rwanda</option>
+									<option style="color: black;" value="SH">Saint Helena</option>
+									<option style="color: black;" value="KN">Saint Kitts And Nevis</option>
+									<option style="color: black;" value="LC">Saint Lucia</option>
+									<option style="color: black;" value="PM">Saint Pierre and Miquelon</option>
+									<option style="color: black;" value="VC">Saint Vincent And The Grenadines</option>
+									<option style="color: black;" value="WS">Samoa</option>
+									<option style="color: black;" value="SM">San Marino</option>
+									<option style="color: black;" value="ST">Sao Tome and Principe</option>
+									<option style="color: black;" value="SA">Saudi Arabia</option>
+									<option style="color: black;" value="SN">Senegal</option>
+									<option style="color: black;" value="rs">Serbia</option>
+									<option style="color: black;" value="SC">Seychelles</option>
+									<option style="color: black;" value="SL">Sierra Leone</option>
+									<option style="color: black;" value="SG">Singapore</option>
+									<option style="color: black;" value="SK">Slovakia</option>
+									<option style="color: black;" value="SI">Slovenia</option>
+									<option style="color: black;" value="SB">Solomon Islands</option>
+									<option style="color: black;" value="SO">Somalia</option>
+									<option style="color: black;" value="ZA">South Africa</option>
+									<option style="color: black;" value="GS">South Georgia &amp; The S. Sandwich Is</option>
+									<option style="color: black;" value="ES">Spain</option>
+									<option style="color: black;" value="LK">Sri Lanka</option>
+									<option style="color: black;" value="SR">Suriname</option>
+									<option style="color: black;" value="SJ">Svalbard And Jan Mayen Is</option>
+									<option style="color: black;" value="SZ">Swaziland</option>
+									<option style="color: black;" value="SE">Sweden</option>
+									<option style="color: black;" value="CH">Switzerland</option>
+									<option style="color: black;" value="TW">Taiwan</option>
+									<option style="color: black;" value="TJ">Tajikistan</option>
+									<option style="color: black;" value="TZ">Tanzania</option>
+									<option style="color: black;" value="TH">Thailand</option>
+									<option style="color: black;" value="TL">Timor-Leste</option>
+									<option style="color: black;" value="TG">Togo</option>
+									<option style="color: black;" value="TK">Tokelau</option>
+									<option style="color: black;" value="TO">Tonga</option>
+									<option style="color: black;" value="TT">Trinidad And Tobago</option>
+									<option style="color: black;" value="TN">Tunisia</option>
+									<option style="color: black;" value="TR">Turkey</option>
+									<option style="color: black;" value="TC">Turks And Caicos Is</option>
+									<option style="color: black;" value="TM">Turkmenistan</option>
+									<option style="color: black;" value="TV">Tuvalu</option>
+									<option style="color: black;" value="UG">Uganda</option>
+									<option style="color: black;" value="UA">Ukraine</option>
+									<option style="color: black;" value="AE">United Arab Emirates</option>
+									<option style="color: black;" value="GB">United Kingdom</option>
+									<option style="color: black;" value="UM">United States Minor Outlying Is</option>
+									<option style="color: black;" value="UY">Uruguay</option>
+									<option style="color: black;" value="UZ">Uzbekistan</option>
+									<option style="color: black;" value="VU">Vanuatu</option>
+									<option style="color: black;" value="VA">Vatican City State (Holy See)</option>
+									<option style="color: black;" value="VE">Venezuela</option>
+									<option style="color: black;" value="VN">Vietnam</option>
+									<option style="color: black;" value="VG">Virgin Islands (British)</option>
+									<option style="color: black;" value="VI">Virgin Islands (US)</option>
+									<option style="color: black;" value="WF">Wallis And Futuna Islands</option>
+									<option style="color: black;" value="EH">Western Sahara</option>
+									<option style="color: black;" value="YE">Yemen</option>
+									<option style="color: black;" value="ZM">Zambia</option>
+									<option style="color: black;" value="ZW">Zimbabwe</option>
+									</select>
+
+							</div>
+
+<div style="padding-left: 16px;">
+	<input type="checkbox" name="checkbox_position">
+	<span style="color: yellow;">
+		check here if you do not want us to send you promotion and deals, If you check this we can only send you transactional emails.
+	</span></div>
+							<br>
+							<div class="col-md-12 form-group">
+								<button type="submit"  class="" style="display: block; border-radius: 0px;
+    line-height: 38px;
+    width: 100%;
+    text-transform: uppercase;
+    border: none;background-color: #72e751;color: #161010;font-weight: bold;" >Download now</button>
+
+							</div>
+
+						</form>
+					</div>
+				</div>
+					{%  endif %}
+
+
+			</div>
+			</div></div>
+	</section>
+	<!--================End Login Box Area =================-->
+
+
+	<footer class="bg3 p-t-75 p-b-32" style="">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 col-lg-4 p-b-50" style="padding-left:55px;">
+
+					<span style="font-size:25px; color:yellow;">Additinal links</span>
+					<ul>
+						<li class="p-b-10">
+							<a href="{% url 'landing_page_seven' %}" class="stext-107 cl7 hov-cl1 trans-04">
+								Home
+							</a>
+						</li>
+
+						<li class="p-b-10">
+							<a href="{% get_social_url_app7 %}" target="_blank" class="stext-107 cl7 hov-cl1 trans-04">
+                               Social Media
+							</a>
+						</li>
+
+					</ul>
+				</div>
+
+				<div class="col-sm-6 col-lg-4 p-b-50">
+					<span style="font-size:25px; color:yellow;">GET IN TOUCH</span>
+
+					<p class="stext-107 cl7 size-201" style="color:white;">
+						{% get_in_touch_text_app7 %}
+					</p>
+				</div>
+
+				<div class="col-sm-6 col-lg-4 p-b-50">
+
+					<span style="font-size:25px; color:yellow;">Newsletter</span>
+
+					<form method="POST" action="{% url 'subscribes_app7' %}">{% csrf_token %}
+
+						<div class="wrap-input1 w-full p-b-4">
+							<input class="form-control" style="width:80%;" type="email" name="subscribe_email" placeholder="Your Email" required>
+							<div class="focus-input1 trans-04"></div>
+						</div>
+
+						<div class="p-t-18">
+							<button type="submit" class="" style="background-color: #4CAF50; /* Green */ border: none; color: white; padding: 10px 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin-top:5px; border-radius: 8px;">
+								Subscribe
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="p-t-40" style="text-align: center; margin-top:45px;">
+				<p class="stext-107 cl6 txt-center">
+					(C) Copyright 2022 Lambda Crunch Inc
+				</p>
+			</div>
+		</div>
+	</footer>
+
+
+
+	<script src="{% static '' %}landing_page_seven/js/vendor/jquery-2.2.4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+	 crossorigin="anonymous"></script>
+	<script src="{% static '' %}landing_page_seven/js/vendor/bootstrap.min.js"></script>
+	<script src="{% static '' %}landing_page_seven/js/jquery.ajaxchimp.min.js"></script>
+	<script src="{% static '' %}landing_page_seven/js/jquery.nice-select.min.js"></script>
+	<script src="{% static '' %}landing_page_seven/js/jquery.sticky.js"></script>
+	<script src="{% static '' %}landing_page_seven/js/nouislider.min.js"></script>
+	<script src="{% static '' %}landing_page_seven/js/jquery.magnific-popup.min.js"></script>
+	<script src="{% static '' %}landing_page_seven/js/owl.carousel.min.js"></script>
+	<!--gmaps Js-->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+	<script src="{% static '' %}landing_page_seven/js/gmaps.min.js"></script>
+	<script src="{% static '' %}landing_page_seven/js/main.js"></script>
+</body>
+
+
+
+
+<script  src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+
+<script>
+function check_Email_Address(){
+var x = document.getElementById('id_Email_Address').value
+console.log(x)
+
+
+jQuery.ajax({
+				url: "{% url 'check_Email_Address_is_exist' %}",
+				type: "POST",
+				data: {x:x},
+
+			})
+			.done(function(response){
+
+			console.log('response')
+			console.log(response)
+			console.log('response')
+
+			if(response == 'Exist'){
+				console.log('Exist')
+
+				document.getElementById('mass').innerHTML =`<p class="primary-btn">Email is already Exist!</p>`			}
+			else{
+			console.log('New')
+			document.getElementById('mass').innerHTML =``
+			}
+
+			});
+
+
+}
+	//document.getElementById('left_content').innerHTML=`dddd`
+
+
+</script>
+
+
+</html>

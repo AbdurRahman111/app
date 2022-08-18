@@ -1,0 +1,402 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+	<div class="card shadow border-0 p-3">
+		<div class="row" style="color: #008CFF; font-weight: bold; font-size: 1.3rem; padding-bottom: 5px;">
+			<div class="col-md-8" style="align-self: end;">Experiment List</div>
+			<div class="col-md-4">
+				<div style="float:right;">
+					<button class="btn add-more-btn configure-experiment" type="button">Configure Campaign</button>
+				</div>         
+			</div>
+		</div>
+		<div style="border-bottom: 2px solid #008CFF;"></div>
+		<div class="experiment-list-container mt-4">
+			<table class="table table-css">
+				<thead class="thead-inverse">
+					<tr>
+						<th width="10%" class="heading">S. #</th>
+						<th width="35%" class="heading">Name</th>
+						<th width="15%" class="heading">Campaign Type</th>
+						<th width="15%" class="heading">Experiment Type</th>
+						<th width="15%" class="heading">Status</th>
+						<th width="10%" class="heading align-middle text-center">Options</th>
+					</tr>
+				</thead>
+				{% if object_list %}
+					<tbody>         
+						{% for experiment in object_list %}
+							<tr>
+								<td>{{forloop.counter}}</td>
+								<td>{{experiment.experiment_name}}</td>
+								<td>
+									{% if experiment.campaign_type %}
+										{{experiment.campaign_type}}
+									{% endif %}
+								</td>
+								<td>{{experiment.experiment_type}}</td>
+								{% if experiment.is_active %}	
+									<td class="text-success">
+										<i class="fas fa-check-circle me-1"></i>In Progress
+									</td>
+								{% else %}
+									<td class="text-danger">
+										<i class="fas fa-times-circle me-1"></i>Closed
+									</td>
+								{% endif %}
+								<td class="align-middle text-center">
+									<input type="checkbox" id="switch-{{forloop.counter}}" class="switch-input" name="experiment-switch-{{forloop.counter}}" {% if experiment.is_active %}checked{% elif not experiment.is_active %}disabled="disabled"{% endif %}>
+									<label class="switch" for="switch-{{forloop.counter}}" style="margin: auto;" {% if experiment.is_active %}title="Close Experiment" {% elif not experiment.is_active %}title="Experiment Closed" {% endif %}></label>
+								</td>          
+		                	</tr>
+		                {% endfor %}                   
+		            </tbody>
+		        	</table>  
+			        <div class="align-middle text-center">
+			        	{% if is_paginated %}
+
+			        	{% if page_obj.has_previous %}
+				        	<a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
+				        	<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+			        	{% endif %}
+
+			        	{% for num in page_obj.paginator.page_range %}
+			        	{% if page_obj.number == num %}
+			        		<a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+			        	{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+			        		<a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+			        	{% endif %}
+			        	{% endfor %}
+
+			        	{% if page_obj.has_next %}
+				        	<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+				        	<a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+			        	{% endif %}
+
+			        	{% endif %}
+			        </div>
+		        {% else %}
+		        	<tbody></tbody>   
+		    		</table>
+				    <br><br><br>
+				    <div style="color: #008CFF; font-style: bold; font-size: 1rem; text-align: center;">
+				    	Sorry, No experiments exist in the system! 
+				    </div>
+		    	{% endif %}
+		</div>
+
+		<div class="experiment-modal-overlay hidden"></div>
+		<div class="modal experiment-config-modal">
+		    <button class="configure-experiment-close">&times;</button>
+		    <p class="modal-heading">Configure Campaign</p>
+		    <div class="mt-4">
+				<form>
+					{% csrf_token %}
+					<div class="row form-row">
+						<div class="col-md-6 position flexed">
+							<label class="panel-body-text" for="campaign-name">Campaign Name</label>
+							{{experiment_form.experiment_name}}
+							<div class="invalid-tooltip"></div>
+						</div>
+						<div class="col-md-6">
+							<label class="panel-body-text" for="campaign-email-list">Saved Email List</label>
+							<select id="campaign-email-list" class="form-select" aria-label="Default select example" name="campaign-email-list">
+							  	<option selected disabled="disabled" value="">Select saved email list</option>
+							  	<option value="1">1</option>
+							  	<option value="2">2</option>
+							</select>
+						</div>
+						<div class="col-md-4 mt-3 position">
+							<label class="panel-body-text" for="campaign-start-date">Campaign Start Date</label>
+							<input id="campaign-start-date" type="date" name="campaign-start-date" class="form-control textinput" placeholder="Campaign start date">
+							<div class="invalid-tooltip"></div>
+						</div>
+						<div class="col-md-4 mt-3 position">
+							<label class="panel-body-text" for="campaign-end-date">Campaign End Date</label>
+							<input type="date" id="campaign-end-date" name="campaign-end-date" class="form-control textinput" placeholder="Campaign end date">
+							<div class="invalid-tooltip"></div>
+						</div>
+						<div class="col-md-4 mt-3 position">
+							<label class="panel-body-text" for="campaign-frequency">Campaign Frequency</label>
+							<select id="campaign-frequency" class="form-select" aria-label="Default select example" name="campaign-frequency">
+							  	<option selected disabled="disabled" value="">Select campaign frequency</option>
+							  	<option value="1">1</option>
+							  	<option value="2">2</option>
+							</select>
+							<div class="invalid-tooltip"></div>
+						</div>
+						<div class="col-md-6 mt-3">
+							<label class="panel-body-text" for="campaign-test-percentage">Test Percentage</label>
+							<input id="campaign-test-percentage" type="number" name="campaign-test-percentage" class="form-control textinput" placeholder="Enter test percentage amount">
+						</div>
+						<div class="col-md-6 mt-3">
+							<label class="panel-body-text" for="campaign-control-percentage">Control Percentage</label>
+							<input id="campaign-control-percentage" type="number" name="campaign-control-percentage" class="form-control textinput" placeholder="Enter control percentage amount">
+						</div>
+					</div>
+				</form>
+			</div>
+			<br><br>
+			<div class="survey-setting-area mt-3">
+		    	<div class="survey-setting-body email-campaign hidden">
+		        	<div class="survey-setting-area-head mb-2">
+		        		Upload new recipients email list
+		        	</div>
+		        	<div class="survey-setting-content">
+		        		<form action="#" enctype="multipart/form-data">
+		        			<div class="form-group mb-3">
+								<select id="email-provider" class="form-select" aria-label="Default select example" name="email-provider" required=''>
+								  	<option selected disabled="disabled" value="">Select Email Campaign Execution Provider</option>
+								  	<option value="MailChimp">MailChimp</option>
+								</select>
+							</div>
+		        			<div class="fileUpload btn blue-btn mb-3">
+							    <span>Select email receipients list file</span>
+							    <input type="file" id="email-file" class="uploadlogo" name="email-list" accept=".csv"/>
+							</div>
+							<div class="form-check mb-3">
+							  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="save-email-list" style="padding: .8rem;">
+							  <label class="form-check-label" for="flexCheckDefault" style="padding: .3rem">
+							    Save list for future experiments
+							  </label>
+							</div>
+							<div style="text-align: center; width: 100%;">
+				        		<button type="submit" id="execute-email" class="btn execute-btn mt-2">Execute Email Experiment</button>
+				        	</div>
+		        		</form>
+		        	</div>
+		        </div>
+		        <div class="survey-setting-body display-campaign hidden">
+		        	<div class="survey-setting-area-head mb-2">
+		        		Generate tags for display experiment
+		        	</div>
+		        	<div class="survey-setting-content">
+		        		<form action="#" enctype="multipart/form-data" style="justify-content: flex-start;">
+		        			<div class="form-group mb-3">
+								<select id="email-provider" class="form-select" aria-label="Default select example" name="email-provider" required=''>
+								  	<option selected disabled="disabled" value="">Select Display Campaign Execution Provider</option>
+								  	<option value="Facebook">Facebook</option>
+								  	<option value="Google">Google</option>
+								</select>
+							</div>
+							<div style="text-align: center; width: 100%;">
+								<button type="submit" id="execute-display" class="btn execute-btn mt-2">Execute Display Experiment</button>
+							</div>
+			        		
+		        		</form>
+		        	</div>
+		        </div>
+		    </div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+{{experiment_form.media}}
+<script>
+	// Scripts for dialog modal
+	  const experimentConfigModal = document.querySelector(".experiment-config-modal");
+	  const experimentConfigModalOpenBth = document.querySelector(".configure-experiment");
+	  const experimentConfigModalCloseBth = document.querySelector(".configure-experiment-close");
+	  const experimentConfigModalOverlay = document.querySelector(".experiment-modal-overlay");
+
+	  experimentConfigModalOpenBth.addEventListener("click", () => {
+	      experimentConfigModal.classList.toggle('visible');
+	      experimentConfigModalOverlay.classList.toggle('hidden');
+	  })
+
+	  experimentConfigModalCloseBth.addEventListener("click", () => {
+	      experimentConfigModal.classList.toggle('visible');
+	      experimentConfigModalOverlay.classList.toggle('hidden');
+	  })
+
+	  experimentConfigModalOverlay.addEventListener("click", () => {
+	      experimentConfigModal.classList.toggle('visible');
+	      experimentConfigModalOverlay.classList.toggle('hidden');
+	  })
+
+	// Checking what type of experiment is being configured and rendering submission panel according to campaign type
+ 	document.querySelector('select[name="experiment_name"]').onchange=function() {
+		let value = document.querySelector('select[name="experiment_name"]').value;
+		let pk;
+		let experimentType;
+		{% for experiment in object_list %}
+			pk = `{{experiment.pk}}`;
+			experimentType = `{{experiment.campaign_type}}`;
+			if (pk == value && experimentType == 'Email'){
+				document.querySelector('.email-campaign').classList.remove('hidden');
+				if(!document.querySelector('.display-campaign').classList.contains('hidden')){
+	  				document.querySelector('.display-campaign').classList.add('hidden');
+	  			}
+			}
+			else if (pk == value && experimentType == 'Display Ads'){
+				document.querySelector('.display-campaign').classList.remove('hidden');
+				if(!document.querySelector('.email-campaign').classList.contains('hidden')){
+	  				document.querySelector('.email-campaign').classList.add('hidden');
+	  			}
+			}
+		{% endfor %}
+	};
+
+	// Jquery script
+	var $j = jQuery.noConflict();
+	var clear = true;
+
+	function validateForm(){
+		clear = true;
+		// Validating if all required fields are filled in or not
+		if($j('input[name="campaign-start-date"]').val() == ''){
+			$j($j('input[name="campaign-start-date"]')).addClass('is-invalid');
+			$j($j('input[name="campaign-start-date"]')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text('Please choose a start date for campaign.');
+			clear = false;
+		}
+		else {
+			$j($j('input[name="campaign-start-date"]')).removeClass('is-invalid');
+		}
+
+		if($j('input[name="campaign-end-date"]').val() == ''){
+			$j($j('input[name="campaign-end-date"]')).addClass('is-invalid');
+			$j($j('input[name="campaign-end-date"]')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text('Please choose a end date for campaign.');
+			clear = false;
+		}
+		else {
+			$j($j('input[name="campaign-end-date"]')).removeClass('is-invalid');
+		}
+
+		if($j('#campaign-frequency').val() == '' || $j('#campaign-frequency').val() == null){
+			$j($j('#campaign-frequency')).addClass('is-invalid');
+			$j($j('#campaign-frequency')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text('Please choose campaign frequency.');
+			clear = false;
+		}
+		else {
+			$j($j('#campaign-frequency')).removeClass('is-invalid');
+		}
+
+		if($j('input[name="campaign-name"]').val() == ''){
+			$j($j('input[name="campaign-name"]')).addClass('is-invalid');
+			$j($j('input[name="campaign-name"]')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text('Please choose campaign name.');
+			clear = false;
+		}
+		else {
+			$j($j('input[name="campaign-name"]')).removeClass('is-invalid');
+		}
+	}
+
+	// executing email campaign
+	$j(document).ready(function (e) {
+		$j('#execute-email').on('click', function () {
+			// preventing default behaviour of button
+			event.preventDefault();
+			// Calling function for form validation
+			validateForm();
+
+			// Check if all fields are filled
+			if(clear === true){
+				// Checking if any email file is selected or added
+				if(document.getElementById('email-file').files.length >= 1 ||  $j('#campaign-email-list').val() != null){
+					console.log('In');
+					var form_data = new FormData();
+					var ins = document.getElementById('email-file').files.length;
+					
+					for (var x = 0; x < ins; x++) {
+						form_data.append("email-file", document.getElementById('email-file').files[x]);
+					}
+
+					// Adding data for submission
+					csrf_token = $j('input[name="csrfmiddlewaretoken"]').val();
+					form_data.append("csrfmiddlewaretoken", $j('input[name="csrfmiddlewaretoken"]').val());
+					form_data.append("campaign-start-date", $j('input[name="campaign-start-date"]').val());
+					form_data.append("campaign-end-date", $j('input[name="campaign-end-date"]').val());
+					form_data.append("campaign-frequency", $j('select[name="campaign-frequency"]').val());
+					form_data.append("campaign-email-list", $j('select[name="campaign-email-list"]').val());
+					form_data.append("campaign-name", $j('input[name="campaign-name"]').val());
+					form_data.append("campaign-test-percentage", $j('input[name="campaign-test-percentage"]').val());
+					form_data.append("campaign-control-percentage", $j('input[name="campaign-control-percentage"]').val());
+					form_data.append("save-email-list", $j('input[name="save-email-list"]').val());
+
+					// $j.ajax({
+					// 	url: `{% url 'experiment:execute-email-experiment' %}`, // point to server-side URL
+					// 	dataType: 'json', // what to expect back from server
+					// 	cache: false,
+					// 	contentType: false,
+					// 	processData: false,
+					// 	//data: {'data': form_data, 'csrfmiddlewaretoken': csrf_token},
+					// 	data: form_data,
+					// 	type: 'post',
+					// 	success: function (response) { // display success response
+					// 		if(response.success==false){
+					// 			console.log('error');
+					// 			console.log(response.message);
+					// 			$j('.spinner-border').hide();
+					// 			$j('.alert-danger').show();
+					// 			$j('.alert-heading').html(response.message);
+					// 		} else {
+
+					// 		}
+					// 	},
+					// 	error: function (response) {
+					// 		console.log(response);
+					// 	}
+					// });
+
+				}
+				else {
+					alert('Please select saved email list or upload new email receipients file!');
+				}
+			}
+		});
+	});
+
+	// executing display campaign
+	$j(document).ready(function (e) {
+		$j('#execute-display').on('click', function () {
+			// preventing default behaviour of button
+			event.preventDefault();
+			// Calling function for form validation
+			validateForm();
+
+			// Check if all fields are filled
+			if(clear === true){
+				var display_form_data = new FormData();
+
+				// Adding data for submission
+				csrf_token = $j('input[name="csrfmiddlewaretoken"]').val();
+				display_form_data.append("csrfmiddlewaretoken", $j('input[name="csrfmiddlewaretoken"]').val());
+				display_form_data.append("campaign-start-date", $j('input[name="campaign-start-date"]').val());
+				display_form_data.append("campaign-end-date", $j('input[name="campaign-end-date"]').val());
+				display_form_data.append("campaign-frequency", $j('select[name="campaign-frequency"]').val());
+				display_form_data.append("campaign-name", $j('input[name="campaign-name"]').val());
+				display_form_data.append("campaign-test-percentage", $j('input[name="campaign-test-percentage"]').val());
+				display_form_data.append("campaign-control-percentage", $j('input[name="campaign-control-percentage"]').val());
+
+				// $j.ajax({
+				// 	url: `{% url 'experiment:execute-email-experiment' %}`, // point to server-side URL
+				// 	dataType: 'json', // what to expect back from server
+				// 	cache: false,
+				// 	contentType: false,
+				// 	processData: false,
+				// 	//data: {'data': form_data, 'csrfmiddlewaretoken': csrf_token},
+				// 	data: form_data,
+				// 	type: 'post',
+				// 	success: function (response) { // display success response
+				// 		if(response.success==false){
+				// 			console.log('error');
+				// 			console.log(response.message);
+				// 			$j('.spinner-border').hide();
+				// 			$j('.alert-danger').show();
+				// 			$j('.alert-heading').html(response.message);
+				// 		} else {
+
+				// 		}
+				// 	},
+				// 	error: function (response) {
+				// 		console.log(response);
+				// 	}
+				// });
+			}
+		});
+	});
+</script>
+{% endblock %}

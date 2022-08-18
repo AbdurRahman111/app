@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+	<div class="card shadow border-0 p-3">
+		<form method="post">
+			{% csrf_token %}
+			<div class="input-group mb-3">
+				{{experiment_form.experiment_name}}
+				<div class="input-group-append">
+				    <button class="btn btn-outline-secondary search-btn" type="submit">Apply</button>
+				</div>
+			</div>
+		</form>
+
+		<div class="experiment-analysis-container">
+			<div>
+				<i class="fas fa-chart-pie-alt mr-2"></i> % of total experiment visits: 100%
+			</div>
+			<div class="nav-bar-container-sub">
+				<ul class="analysis-nav-bar-container nav-tabs mt-2">
+					<li class="analysis-nav-bar-button border-bottom-0">
+						Explorer
+					</li>
+				</ul>
+				<div style="position: absolute;">
+					<ul class="analysis-navbar-options">
+						<li class="active">Conversions</li>
+					</ul>
+				</div>
+				<div style="margin: 50px 0;">
+					<ul class="analysis-nav-bar-container nav-tabs mt-2">
+						<li class="analysis-nav-bar-bottom border-top-0">
+							Experiment running - No winner yet
+						</li>
+					</ul>	
+				</div>
+				
+			</div>
+		</div>
+		<!-- Graphical Section -->
+		<div class="analysis-details-container mb-3">
+			<!-- Experiment analysis graph -->
+			<div class="analysis-graph-container mt-3">
+				<div class="analysis-graph-filter">
+					<div class="analysis-graph-mertics">
+						<select class="form-select metrics-select" aria-label="select metric for graph">
+						  <option value="Conversion Rate">Conversion Rate</option>
+						  {% for name in experiment_metric_name %}
+						  	<option value="{{name}}">{{name}}</option>
+						  {% endfor %}
+						</select>	
+					</div>
+					<ul class="analysis-graph-time">
+						<li class="active">Day</li>
+						<li>Week</li>
+						<li>Month</li>
+					</ul>
+				</div>
+				<div class="analysis-graph-info mt-2 mb-2">
+					<ul>
+						{% for variation in experiment_variations %}
+							{% if forloop.counter == 1 %}
+								<li>Original</li>
+							{% else %}
+								<li>Variation {{forloop.counter0}}</li>
+							{% endif %}
+						{% endfor %}
+					</ul>
+				</div>
+				<div class="divider-horizental-solid"></div>
+				<div class="graph-section">
+					<div>
+						<div class="chartjs-size-monitor">
+							<div class="chartjs-size-monitor-expand">
+								<div class=""></div>
+							</div>
+							<div class="chartjs-size-monitor-shrink">
+								<div class=""></div>
+							</div>
+						</div>
+						<canvas id="canvas" style="width: 700px;" class="chartjs-render-monitor"></canvas>
+					</div>
+				</div>
+			</div>
+			<!-- Vertical devider -->
+			<div class="analysis-container-vertical-devider"></div>
+			<!-- Experiment detail section -->
+			<div class="analysis-graph-details">
+				<div class="experiement-data-figures">
+					<!-- <div><span>#</span>  Visits</div>
+					<div><span>#</span>  Days of data</div>
+					<div><span>#</span>  Visitors included</div> -->
+					<div class="figures-data">
+						<span>{{total_visits}}</span>
+						<span>{{days_of_data}}</span>
+						<span>{{number_of_visitors}}</span>
+					</div>
+					<div class="figures-title">
+						<span>Visits</span>
+						<span>
+							Days of data
+							<i class="fa fa-question-circle con-tooltip bottom">
+					        	<div class="tooltip ">
+					          		<p>Days of data</p>
+					        	</div>
+					        </i>
+						</span> 
+						<span>
+							Visitors included
+					        <i class="fa fa-question-circle con-tooltip bottom">
+					        	<div class="tooltip ">
+					          		<p>Visitors included</p>
+					        	</div>
+					        </i>
+						</span>
+					</div>
+				</div>
+				<div class="experiement-status-box">
+					<div class="heading">Status:
+						<i class="fa fa-question-circle con-tooltip bottom" style="font-size: 1rem; top: 14px; left: -17px;">
+				        	<div class="tooltip">
+				          		<p>Experiment status</p>
+				        	</div>
+				        </i>
+  					</div>
+					
+					<div class="content">No winner yet - <br> Experiment still running</div>
+				</div>	
+			</div>
+		</div>
+		<!-- Experiment analysis table -->
+		<div class="mb-5">
+			<table class="table experiment-analysis-table">
+				<thead>
+					<tr>
+						<th style="width: 30%;">Variation</th>
+						<th style="width: 15%;" class="text-right">Experiment Visits</th>
+						<th style="width: 10%;" class="text-right">Conversions</th>
+						<th style="width: 15%;" class="text-right">Conversion Rate</th>
+						<th style="width: 20%;" class="text-right">Compare to Original</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if Experiment %}
+						{% for variation in variations_analysis %}
+							{% if variation.0 == 'Original' %}
+								<tr>
+									<td>{{variation.0}}</td>
+									<td>{{variation.1}}</td>
+									<td>{{variation.2}}</td>
+									<td>
+										{{variation.3|floatformat:3}}%
+									</td>
+									<td>
+										{% if variation.0 == 'Original' %}
+											
+										{% elif original_conversion_rate < variation.3 %}
+											<i class="fas fa-arrow-alt-up" style="color:green;"></i>
+										{% elif original_conversion_rate > variation.3 %}
+											<i class="fas fa-arrow-alt-down" style="color:red"></i>
+										{% endif %}
+										{{variation.4|floatformat:3}}%
+									</td>
+								</tr>
+							{% endif %}
+						{% endfor %}
+						{% for variation in variations_analysis %}
+							{% if not variation.0 == 'Original' %}
+								<tr>
+									<td>{{variation.0}}</td>
+									<td>{{variation.1}}</td>
+									<td>{{variation.2}}</td>
+									<td>
+										{{variation.3|floatformat:3}}%
+									</td>
+									<td>
+										{% if original_conversion_rate|floatformat:3 < variation.3|floatformat:3 %}
+											<i class="fas fa-arrow-alt-up" style="color:green;"></i>
+										{% elif original_conversion_rate|floatformat:3 > variation.3|floatformat:3 %}
+											<i class="fas fa-arrow-alt-down" style="color:red"></i>
+										{% endif %}
+										{{variation.4|floatformat:3}}%
+									</td>
+								</tr>
+							{% endif %}
+						{% endfor %}
+					</tbody>
+				{% else %}
+					<tbody></tbody>
+					</table>
+					<center style="font-size: 1.2rem; font-weight: bold;">No experiment Loaded!</center>
+				{% endif %}
+			</table>
+		</div>
+	</div>
+{% endblock %}
+
+{% block scripts %}
+	<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    {{experiment_form.media}}
+	{% if Experiment %}
+		<script type="text/javascript">
+			// Declaing array for graph colors
+			const colors = ["#058DC7", "#50B432", "#AF49C5", "#ED7E17"];
+
+			// Filter time element for graph
+			let listItems = document.querySelectorAll('.analysis-graph-time li');
+
+			// Graph intialization configurations 
+			var config = {
+				type: 'line',
+				data: {
+					labels: {{variations_analysis_graph_labels|safe}},
+					datasets: [
+						{% for array in variations_analysis_graph %}
+							{
+								backgroundColor: colors[{{forloop.counter0}}],
+								borderColor: colors[{{forloop.counter0}}],
+								fill: false,
+								data: [{% for data in array %}{{data|floatformat:3}}{% if not forloop.last %},{% endif %}{% endfor %}]
+							},
+						{% endfor %}
+					]
+				},
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					title: {
+						display: false,
+					},
+					plugins: {
+			            legend: {
+			                display: false
+			            },
+			            tooltip: {
+				            callbacks: {
+				                label: function(context) {
+				                    var label = context.dataset.label || '';
+				                    if (context.parsed.y !== null) {
+				                        label += 'Conversion Rate = ' +context.parsed.y + '%';
+				                    }
+				                    return label;
+				                }
+				            }
+				        },
+			        },
+					scales: {
+				        y: [{
+				            ticks: {
+				                beginAtZero: true
+				            }
+				        }]
+				    }
+				}
+			};
+
+			// render block on html
+			const myChart = new Chart(
+			  document.getElementById('canvas'),
+			  config
+			);
+
+			// Checking filter click and other events
+			listItems.forEach((item, index) => {
+				if(item.innerHTML == `{{graph_time}}`){
+					// Removing active class from all siblings
+			    	item.parentElement.querySelectorAll( ".active" ).forEach( e =>
+	        			e.classList.remove( "active" ) 
+	        		);
+					item.classList.toggle('active');
+				}
+				
+			  	item.addEventListener('click', (event) => {
+			  		// Removing active class from all siblings
+			    	item.parentElement.querySelectorAll( ".active" ).forEach( e =>
+	        			e.classList.remove( "active" ) 
+	        		);
+	        		item.classList.toggle('active');
+
+	        		// Updating chart data according to click
+				  	if(item.innerHTML == 'Day'){
+
+				  	}
+				  	// Updating graph analysis according to weeks
+				  	else if(item.innerHTML == 'Week'){
+				  		var data = {
+						    labels: {{variations_analysis_graph_labels|safe}},
+						    
+						    datasets: [
+								{% for array in variations_analysis_graph %}
+									{
+										backgroundColor: colors[{{forloop.counter0}}],
+										borderColor: colors[{{forloop.counter0}}],
+										fill: false,
+										data: [{% for data in array %}{{data|floatformat:3}}{% if not forloop.last %},{% endif %}{% endfor %}]
+									},
+								{% endfor %}
+							]
+					    };
+					    myChart.data = data;
+						myChart.update();
+				  	}
+				  	// Updating graph analysis according to months
+				  	else {
+				  		var data = {
+						    labels: {{variations_analysis_month_graph_labels|safe}},
+						    
+						    datasets: [
+								{% for array in variations_analysis_month_graph %}
+									{
+										backgroundColor: colors[{{forloop.counter0}}],
+										borderColor: colors[{{forloop.counter0}}],
+										fill: false,
+										data: [{% for data in array %}{{data|floatformat:3}}{% if not forloop.last %},{% endif %}{% endfor %}]
+									},
+								{% endfor %}
+							]
+					    };
+					    myChart.data = data;
+						myChart.update();
+				  	}
+			  	});
+			});
+		</script>
+	{% endif %}
+
+{% endblock %}

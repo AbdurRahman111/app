@@ -1,0 +1,374 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Main CSS -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/registration.css' %}?{% now 'U' %}">  
+
+        <!-- Fav Icon for the system -->
+        <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}?{% now 'U' %}"/>
+
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+        <title>{{title}}</title>
+    </head>
+
+    <body>
+        <!-- MultiStep Form -->
+            <div class="row">
+                <header class="head-form">
+                    <h2>Crunchscaled</h2>
+                    <br>
+                    <!--     A welcome message or an explanation of the login form -->
+                    <h3>Welcome to Crunchscaled Registration Page</h3>
+                    <p>Please fill the forms to complete your registration</p>
+                </header>
+                <div class="col-md-6 col-md-offset-3">
+                    <form id="msform" method="post">
+                        {% csrf_token %}
+                        <!-- progressbar -->
+                        <ul id="progressbar">
+                            <li class="active">User Details</li>
+                            <li>Subscription Details</li>
+                        </ul>
+                        <!-- fieldsets -->
+                        <fieldset>
+                            <h2 class="fs-title">User Details</h2>
+                            <h3 class="fs-subtitle">Tell us something more about you</h3>
+                            {% with url_name=request.resolver_match.url_name %}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <div class="alert {{ message.tags }} d-flex align-items-center alert-dismissible fade show mt-2 mb-2" role="alert" >
+                                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
+                                                <use xlink:href="{% if message.tags == 'alert-info' %}#info-fill{% elif message.tags == 'alert-success' %}#check-circle-fill{% elif message.tags == 'alert-danger' or message.tags == 'alert-warning' %}#exclamation-triangle-fill{% endif %}"/>
+                                            </svg>
+                                            <div>
+                                                {{ message }}
+                                            </div>
+                                        </div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                                            <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                            </symbol>
+                                            <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                                            </symbol>
+                                            <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                            </symbol>
+                                        </svg>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                            <div class="input-field-container">
+                                <input type="text" name="first_name" id="first_name" class="form-input" placeholder="First Name" required />
+                                <div class="invalid-tooltip"></div>
+                            </div>
+                            <div class="input-field-container">
+                                <input type="text" name="last_name" id="last_name" class="form-input" placeholder="Last Name" required />
+                                <div class="invalid-tooltip"></div>
+                            </div>
+                            <div class="input-field-container">
+                                <input type="text" name="username" id="username" class="form-input" placeholder="Username" required />
+                                <div class="invalid-tooltip"></div>
+                            </div>
+                            <div class="input-field-container">
+                                <input type="text" name="email" id="email" class="form-input" placeholder="Email"/>
+                                <div class="invalid-tooltip"></div>
+                            </div>
+                            <div class="password-container input-field-container">
+                                <input type="password" name="password1" id="pwd" class="form-input mb-0" placeholder="Password" required />
+                                <span>
+                                    <i class="fa fa-eye" aria-hidden="true"  type="button" id="eye"></i>
+                                </span>
+                                <div class="invalid-tooltip"></div>
+                            </div>
+                            <div class="password-container input-field-container">
+                                <input type="password" name="password2" id="pwd2" class="form-input mb-0" placeholder="Confirm Password" required />
+                                <span>
+                                    <i class="fa fa-eye" aria-hidden="true"  type="button" id="eye2"></i>
+                                </span>
+                                <div class="invalid-tooltip"></div>
+                            </div>
+                            <input type="button" name="next" class="next action-button" value="Next"/>
+                        </fieldset>
+                        
+                        <fieldset>
+                            <h2 class="fs-title">Subscription Details</h2>
+                            <h3 class="fs-subtitle">Tell us about your subscription</h3>
+                            <div class="input-field-container">
+                                <input type="text" name="company_id" class="form-input" placeholder="Compnay Id"/>
+                                <div class="invalid-tooltip"></div>
+                            </div>
+                            <div class="input-field-container">
+                                <input type="string" name="subscription_id" class="form-input" placeholder="Subscription Id"/>
+                                <div class="invalid-tooltip"></div>
+                            </div>
+                            <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                            <input type="submit" name="submit" class="submit action-button" value="Submit"/>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <!-- /.MultiStep Form -->
+
+        <!-- jQuery CDN -->
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+        <!-- Jquery UI for steps slide in -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+        <script>
+            //jQuery time
+            var current_fs, next_fs, previous_fs; //fieldsets
+            var left, opacity, scale; //fieldset properties which we will animate
+            var animating; //flag to prevent quick multi-click glitches
+            var step1FormValidated = true; // Variable used for varifing that all fields are filled with input
+            var step2FormValidated = true; // Variable used for varifing that all fields are filled with input
+            var passwordValidated = true; // Variable used for varifying that password has minimum length of 8 and both passwords are same
+
+            $("#msform").submit(function( event ){
+                // calling function to validate second step form
+                validateForm2();
+                if(step2FormValidated == true){
+                    $("#msform").submit();
+                }
+                else {
+                    event.preventDefault();
+                }
+            })
+
+            $(".next").click(function(){
+                // calling function to validate first step form
+                validateForm1();
+                if(step1FormValidated == true){
+                    // Checking if step 1 form validation was successfull and running password validation
+                    validatePassowrd();
+                }
+                
+                if(step1FormValidated == true && passwordValidated == true ){
+                    if(animating) return false;
+                    animating = true;
+                    
+                    current_fs = $(this).parent();
+                    next_fs = $(this).parent().next();
+                    
+                    //activate next step on progressbar using the index of next_fs
+                    $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+                    
+                    //show the next fieldset
+                    next_fs.show(); 
+                    //hide the current fieldset with style
+                    current_fs.animate({opacity: 0}, {
+                        step: function(now, mx) {
+                            //as the opacity of current_fs reduces to 0 - stored in "now"
+                            //1. scale current_fs down to 80%
+                            scale = 1 - (1 - now) * 0.2;
+                            //2. bring next_fs from the right(50%)
+                            left = (now * 50)+"%";
+                            //3. increase opacity of next_fs to 1 as it moves in
+                            opacity = 1 - now;
+                            current_fs.css({
+                        'transform': 'scale('+scale+')',
+                        'position': 'absolute'
+                      });
+                            next_fs.css({'left': left, 'opacity': opacity});
+                        }, 
+                        duration: 800, 
+                        complete: function(){
+                            current_fs.hide();
+                            animating = false;
+                        }, 
+                        //this comes from the custom easing plugin
+                        easing: 'easeInOutBack'
+                    });
+                }
+                
+            });
+
+            $(".previous").click(function(){
+                if(animating) return false;
+                animating = true;
+                
+                current_fs = $(this).parent();
+                previous_fs = $(this).parent().prev();
+                
+                //de-activate current step on progressbar
+                $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+                
+                //show the previous fieldset
+                previous_fs.show(); 
+                //hide the current fieldset with style
+                current_fs.animate({opacity: 0}, {
+                    step: function(now, mx) {
+                        //as the opacity of current_fs reduces to 0 - stored in "now"
+                        //1. scale previous_fs from 80% to 100%
+                        scale = 0.8 + (1 - now) * 0.2;
+                        //2. take current_fs to the right(50%) - from 0%
+                        left = ((1-now) * 50)+"%";
+                        //3. increase opacity of previous_fs to 1 as it moves in
+                        opacity = 1 - now;
+                        current_fs.css({'left': left});
+                        previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
+                    }, 
+                    duration: 800, 
+                    complete: function(){
+                        current_fs.hide();
+                        animating = false;
+                    }, 
+                    //this comes from the custom easing plugin
+                    easing: 'easeInOutBack'
+                });
+            });
+
+
+            function show(elem) {
+                var p = document.getElementById(elem);
+                p.setAttribute('type', 'text');
+            }
+
+            function hide(elem) {
+                var p = document.getElementById(elem);
+                p.setAttribute('type', 'password');
+            }
+
+            var pwShown = 0;
+
+            document.getElementById("eye").addEventListener("click", function () {
+                if (pwShown == 0) {
+                    pwShown = 1;
+                    show('pwd');
+                } else {
+                    pwShown = 0;
+                    hide('pwd');
+                }
+            }, false);
+
+            document.getElementById("eye2").addEventListener("click", function () {
+                if (pwShown == 0) {
+                    pwShown = 1;
+                    show('pwd2');
+                } else {
+                    pwShown = 0;
+                    hide('pwd2');
+                }
+            }, false);
+
+            
+            // Function to validate that all fields of first form are filled
+            function validateForm1(){
+                step1FormValidated = true;
+                // Validating if all required fields are filled in or not
+                if($('input[name="first_name"]').val() == ''){
+                    $($('input[name="first_name"]')).addClass('is-invalid');
+                    $($('input[name="first_name"]')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text('Please enter your first name');
+                    step1FormValidated = false;
+                }
+                else {
+                    $($('input[name="first_name"]')).removeClass('is-invalid');
+                }
+
+                if($('input[name="last_name"]').val() == ''){
+                    $($('input[name="last_name"]')).addClass('is-invalid');
+                    $($('input[name="last_name"]')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text('Please enter your last name');
+                    step1FormValidated = false;
+                }
+                else {
+                    $($('input[name="last_name"]')).removeClass('is-invalid');
+                }
+
+                if($('#username').val() == '' || $('#username').val() == null){
+                    $($('#username')).addClass('is-invalid');
+                    $($('#username')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text('Please enter your username');
+                    step1FormValidated = false;
+                }
+                else {
+                    $($('#username')).removeClass('is-invalid');
+                }
+
+                if($('input[name="email"]').val() == ''){
+                    $($('input[name="email"]')).addClass('is-invalid');
+                    $($('input[name="email"]')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text('Please enter your email address');
+                    step1FormValidated = false;
+                }
+                else {
+                    $($('input[name="email"]')).removeClass('is-invalid');
+                }
+
+                if($('input[name="password1"]').val() == ''){
+                    $($('input[name="password1"]')).addClass('is-invalid');
+                    $($('input[name="password1"]')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text('Please enter your password');
+                    step1FormValidated = false;
+
+                }
+                else if($('input[name="password1"]').val().length < 8){
+                    $($('input[name="password1"]')).addClass('is-invalid');
+                    $($('input[name="password1"]')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text('Password must have minimum length of 8 characters');
+                    step1FormValidated = false;
+                }
+                else {
+                    $($('input[name="password1"]')).removeClass('is-invalid');
+                }
+
+                if($('input[name="password2"]').val() == ''){
+                    $($('input[name="password2"]')).addClass('is-invalid');
+                    $($('input[name="password2"]')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text('Please enter your password');
+                    step1FormValidated = false;
+                }
+                else if($('#pwd2').val().length < 8){
+                    $($('input[name="password2"]')).removeClass('is-invalid');
+                    $($('input[name="password2"]')).addClass('is-invalid');
+                    $($('#pwd2')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text('Password must have minimum length of 8 characters');
+                    step1FormValidated = false;
+                }
+                else {
+                    $($('input[name="password2"]')).removeClass('is-invalid');
+                }
+            }
+
+            // Function to validate that all fields of second form are filled
+            function validateForm2(){
+                step2FormValidated = true;
+                // Validating if all required fields are filled in or not
+                if($('input[name="company_id"]').val() == ''){
+                    $($('input[name="company_id"]')).addClass('is-invalid');
+                    $($('input[name="company_id"]')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text('Please enter your compnay id');
+                    step2FormValidated = false;
+                }
+                else {
+                    $($('input[name="company_id"]')).removeClass('is-invalid');
+                }
+
+                if($('input[name="subscription_id"]').val() == ''){
+                    $($('input[name="subscription_id"]')).addClass('is-invalid');
+                    $($('input[name="subscription_id"]')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text('Please enter your subscription id');
+                    step2FormValidated = false;
+                }
+                else {
+                    $($('input[name="subscription_id"]')).removeClass('is-invalid');
+                }
+            }
+
+            // Function to validate that password and confirm password are same
+            function validatePassowrd(){
+                step1FormValidated = true;
+                if($('input[name="password2"]').val() != $('input[name="password1"]').val()){
+                    $($('input[name="password2"]')).addClass('is-invalid');
+                    $($('input[name="password2"]')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text("Your passwords doesn't match. Please confirm both passwords are same ");
+                    $($('input[name="password1"]')).addClass('is-invalid');
+                    $($('input[name="password1"]')).addClass('is-invalid').siblings( ".invalid-tooltip" ).text("Your passwords doesn't match. Please confirm both passwords are same ");
+                    passwordValidated = false;
+                }
+                else {
+                    $($('input[name="password2"]')).removeClass('is-invalid');
+                    passwordValidated = true;
+                }
+            }
+        </script>
+    </body>
+</html>

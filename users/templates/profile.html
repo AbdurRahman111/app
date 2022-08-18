@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+
+<div id="page-content" class="card shadow border-0 p-3">
+	<h2 class="page-title">My Account</h2>
+	<div class="no-padding no-shadow profile-content">
+		<div class="side-bar-menu-wrapper column-left-lg">
+			<div class="widget">
+				<div class="sidebar-widget">
+					<h4>My Apps</h4>
+					<hr>
+					<ul class="widget-list">
+						<li class="">
+							<a class="widget-link" href="{% url 'users:configure-ad-providers' %}">
+								<span>
+									<i class="fas fa-ad"></i>
+									Configure Providers
+								</span>
+							</a>
+						</li>
+						<li class="">
+							<a class="widget-link" href="#">
+								<span>
+									<i class="fab fa-aws"></i>
+									S3 Bucket Configuration
+								</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="widget">
+				<div class="sidebar-widget">
+
+					<h4>Account Options</h4>
+					<hr>
+
+					<ul class="widget-list">
+						<li class="">
+							<a class="widget-link" href="{% url 'users:user-profile' %}">
+								<span>
+									<i class="fas fa-user-circle"></i>
+									Dashboard
+								</span>
+							</a>
+						</li>
+						<li class="">
+							<a class="widget-link" href="#">
+								<span>
+									<i class="fas fa-key"></i>
+									Change Password
+								</span>
+							</a>
+						</li>
+						<li class="">
+							<a class="widget-link" href="{% url 'users:edit-user-profile' %}">
+								<span>
+									<i class="fas fa-user-cog"></i>
+									Update Profile
+								</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="column-right-lg">
+			<div class="dashboard-box">
+				<div class="dash-box-hd">
+					<h3>
+						<span class="fl">
+							<div class="media">
+								<img class="rounded-circle account-img" src="{{user.user_profile.profile_image.url }}">
+								<div class="media-body">
+									<h2 class="account-heading"> Welcome {{user.username}}!</h2>
+									<p class="text-secondary">{{user.email}}</p>
+									<span class="text-secondary">Member Since:</span> 
+									<span class="text-secondary">{{ user.date_joined|date:"D, d M, Y" }}</span> 
+								</div>
+							</div>
+						</span> 
+					</h3>
+				</div>
+				<div class="dashboard-content">
+					<!-- <ul class="account-content">
+						<li class="account-wishlist">
+							<legend class="border-bottom accout-legend">My Wishlist</legend>
+							<span class="account-info">
+								You have {{wishlist}} products in your wishlist.
+							</span>
+						</li>
+						<li class="account-reviews">
+							<legend class="border-bottom accout-legend">My Feedback</legend>
+							<span class="account-info">
+								{% if feedback == 0 %}
+									You have provided feedback {{feedback}} times!
+									<br>
+									We value your feedback and views about our work with high regards.
+								{% else %}
+									You have provided feedback {{feedback}} times! Thank You.
+									<br>
+									We value your feedback and views about our work with high regards.
+								{% endif %}
+							</span>
+						</li>
+					</ul> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

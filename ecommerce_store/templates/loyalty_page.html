@@ -1,0 +1,30 @@
+{% extends "ecommerce_base.html" %}
+{% block body %}
+
+<style>
+#line{
+    text-decoration-line: underline;
+    text-underline-offset: 6px;
+}
+</style>
+
+
+  <section class="vh-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card shadow-2-strong" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+              <h1><span class="badge text-dark" style="background-color:#EDF091;">Loyalty Coupon</span></h1>
+              <h4 class="mb-5 font-weight-bold" id="line">Congrates You Got <span style="color:purple">{{ chk_loyalty_id.Coupon_rate.level_name }}</span> {{ chk_loyalty_id.Discount_percentage }}% Discount !</h4>
+              <h1><span class="badge bg-warning text-dark">{{ chk_loyalty_id.loyality_Coupon_Code }}</span></h1>
+              <h4>Use That Coupon For Getting {{ chk_loyalty_id.Discount_percentage }}% Discount !!</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+{% endblock %}

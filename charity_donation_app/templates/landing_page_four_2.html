@@ -1,0 +1,441 @@
+{% load static %}
+
+{% load app_4_custom_tags %}
+
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+	<!-- Mobile Specific Meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Favicon-->
+	<link rel="shortcut icon" href="{% static '' %}landing_page_four/img/fav.png">
+	<!-- Author Meta -->
+	<meta name="author" content="CodePixar">
+	<!-- Meta Description -->
+	<meta name="description" content="">
+	<!-- Meta Keyword -->
+	<meta name="keywords" content="">
+	<!-- meta character set -->
+	<meta charset="UTF-8">
+	<!-- Site Title -->
+	<title>Karma Shop</title>
+
+	<!--
+		CSS
+		============================================= -->
+	<link rel="stylesheet" href="{% static '' %}landing_page_four/css/linearicons.css">
+	<link rel="stylesheet" href="{% static '' %}landing_page_four/css/owl.carousel.css">
+	<link rel="stylesheet" href="{% static '' %}landing_page_four/css/themify-icons.css">
+	<link rel="stylesheet" href="{% static '' %}landing_page_four/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{% static '' %}landing_page_four/css/nice-select.css">
+	<link rel="stylesheet" href="{% static '' %}landing_page_four/css/nouislider.min.css">
+	<link rel="stylesheet" href="{% static '' %}landing_page_four/css/bootstrap.css">
+	<link rel="stylesheet" href="{% static '' %}landing_page_four/css/main.css">
+
+<style>
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+</style>
+
+<style>
+
+.bg3 {
+    background-color: #222;
+}
+
+
+.p-b-32, .p-tb-32, .p-all-32 {
+    padding-bottom: 32px;
+}
+
+.p-t-75, .p-tb-75, .p-all-75 {
+    padding-top: 75px;
+}
+
+
+article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
+    display: block;
+}
+
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+</style>
+
+
+<style>
+
+
+
+.Placeholder_Text_style {
+  padding-left: 14px;
+  pointer-events: none;
+  position:absolute;
+  left:29px;
+  top:17px;
+  transition: 0.2s;
+  transition-timing-function: ease;
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  opacity:0.5;
+}
+
+input:focus + span, input:not(:placeholder-shown) + span {
+  opacity:1;
+  transform: scale(0.75) translateY(-100%) translateX(-30px);
+}
+
+/* For IE Browsers*/
+input:focus + span, input:not(:-ms-input-placeholder) + span {
+  opacity:1;
+  transform: scale(0.75) translateY(-100%) translateX(-30px);
+}
+
+
+</style>
+<style>
+  .StripeElement {
+    box-sizing: border-box;
+
+    height: 40px;
+
+    padding: 10px 12px;
+
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: white;
+
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+  }
+
+  .StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+  }
+
+  .StripeElement--invalid {
+    border-color: #fa755a;
+  }
+
+  .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+  }
+  .form-row,
+  .submit-btn,
+  .card-element {
+    width: 100%;
+  }
+  .form-row {
+    padding: 2em;
+  }
+  #paypal-button-container {
+    margin-top: 2em;
+    width: 100%;
+  }
+</style>
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #89CE18;">
+        <a class="navbar-brand" href="{% url 'landing_page_four' %}">
+        <img src="{% get_last_logo_app4 %}" style="height:60px; width:auto;" alt="">
+      </a>
+
+  <a class="navbar-brand" href="{% url 'landing_page_four' %}">Charity Donation</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'landing_page_four' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<section class="login_box_area ">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12" style="background: url({{get_left.Mobel_left_image.url}}) no-repeat center fixed;height: 1401px;
+    -webkit-background-size: cover;">
+<!--					<img class="img-fluid" src="{{get_left.Mobel_left_image.url}}" alt="" style="width: 100%;height: 1100px;">-->
+
+					<div class="row" style="position: absolute;width: 100%;left: 0px;top: 0px;margin-top: 200px;">
+						<div class="col-lg-8" style="margin-top: 256px;margin-bottom: 112px;">
+							<div class="login_box_img" style="margin-top: -161px;">
+		{% if get_left.Mobel_left_content  %}
+		<!--						<img class="img-fluid" src="{% static '' %}landing_page_one/img/login.jpg" alt="">-->
+<!--								<img class="img-fluid" src="{{get_left.Mobel_left_image.url}}" alt="" height="1201px" width="1251px">-->
+
+								<div class="hover">
+									<p>
+									{{get_left.Mobel_left_content | safe }}
+									</p>
+								</div>
+		<!--						<div class="hover">-->
+
+		<!--						</div>	{{get_left.Mobel_left_content | safe }}-->
+
+		{% endif %}
+							</div>
+						</div>
+						<div class="col-lg-4" >
+							<div class="login_form_inner" style="margin-right: 76px;background-color: #d7d4a7;padding-top: 30px;padding-bottom: 30px;">
+								<h3 class="primary-btn">DONATE NOW</h3>
+
+								{% for message in messages %}<br>
+								  <div class="col-md-12 form-group primary-btn" style="width: 86%;font-size: 13px;">{{ message }}</div>
+								{% endfor %}
+
+
+
+
+								<h3 class="text-center">Credit Card</h3>
+								<form method="POST" id="payment-form" class="payment-form">
+									{% csrf_token %}
+									<div class="col-md-12 form-group">
+										<label style="width: 100%;">
+											<input type="number" class="form-control" id="id_amont" name="name_Address" placeholder=" " style="width: 95%;margin-left: 7px;height: 48px;"  required />
+											<span class="Placeholder_Text_style">Amount (USD)</span>
+										</label>
+									</div>
+
+									<div class="form-row" style="margin-top: -21px;">
+									  <label for="card-element">
+										Credit or debit card
+									  </label>
+									  <div id="card-element" class="card-element"></div>
+									  <div id="card-errors" role="alert"></div>
+										<div class="col-md-12 form-group">
+									  <button class="btn btn-info submit-btn" type="submit" style="margin-top: 22px;">
+										Submit Payment
+									  </button>
+</div>
+									  <div id="paypal-button-container"></div>
+									</div>
+								  </form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+<footer class="bg3 p-t-75 p-b-32" style="">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 col-lg-4 p-b-50" style="padding-left:55px;">
+
+					<span style="font-size:25px; color:yellow;">Additinal links</span>
+					<ul>
+						<li class="p-b-10">
+							<a href="{% url 'landing_page_four' %}" class="stext-107 cl7 hov-cl1 trans-04">
+								Home
+							</a>
+						</li>
+
+						<li class="p-b-10">
+							<a href="{% get_social_url_app4 %}" target="_blank" class="stext-107 cl7 hov-cl1 trans-04">
+                               Social Media
+							</a>
+						</li>
+
+					</ul>
+				</div>
+
+				<div class="col-sm-6 col-lg-4 p-b-50">
+					<span style="font-size:25px; color:yellow;">GET IN TOUCH</span>
+
+					<p class="stext-107 cl7 size-201" style="color:white;">
+						{% get_in_touch_text_app4 %}
+					</p>
+				</div>
+
+				<div class="col-sm-6 col-lg-4 p-b-50">
+
+					<span style="font-size:25px; color:yellow;">Newsletter</span>
+
+					<form method="POST" action="{% url 'subscribes_app4' %}">{% csrf_token %}
+
+						<div class="wrap-input1 w-full p-b-4">
+							<input class="form-control" style="width:80%;" type="email" name="subscribe_email" placeholder="Your Email" required>
+							<div class="focus-input1 trans-04"></div>
+						</div>
+
+						<div class="p-t-18">
+							<button type="submit" class="" style="background-color: #4CAF50; /* Green */ border: none; color: white; padding: 10px 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin-top:5px; border-radius: 8px;">
+								Subscribe
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="p-t-40" style="text-align: center; margin-top:45px;">
+				<p class="stext-107 cl6 txt-center">
+					(C) Copyright 2022 Lambda Crunch Inc
+				</p>
+			</div>
+		</div>
+	</footer>
+
+
+
+
+
+	<!--================Login Box Area =================-->
+
+	<!--================End Login Box Area =================-->
+
+
+
+
+	<script src="{% static '' %}landing_page_four/js/vendor/jquery-2.2.4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+	 crossorigin="anonymous"></script>
+	<script src="{% static '' %}landing_page_four/js/vendor/bootstrap.min.js"></script>
+	<script src="{% static '' %}landing_page_four/js/jquery.ajaxchimp.min.js"></script>
+	<script src="{% static '' %}landing_page_four/js/jquery.nice-select.min.js"></script>
+	<script src="{% static '' %}landing_page_four/js/jquery.sticky.js"></script>
+	<script src="{% static '' %}landing_page_four/js/nouislider.min.js"></script>
+	<script src="{% static '' %}landing_page_four/js/jquery.magnific-popup.min.js"></script>
+	<script src="{% static '' %}landing_page_four/js/owl.carousel.min.js"></script>
+	<!--gmaps Js-->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+	<script src="{% static '' %}landing_page_four/js/gmaps.min.js"></script>
+	<script src="{% static '' %}landing_page_four/js/main.js"></script>
+</body>
+
+
+
+
+<script  src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+
+<script>
+function check_Email_Address(){
+var x = document.getElementById('id_Email_Address').value
+console.log(x)
+
+
+jQuery.ajax({
+				url: "{% url 'check_Email_Address_is_exist' %}",
+				type: "POST",
+				data: {x:x},
+
+			})
+			.done(function(response){
+
+			console.log('response')
+			console.log(response)
+			console.log('response')
+
+			if(response == 'Exist'){
+				console.log('Exist')
+
+				document.getElementById('mass').innerHTML =`<p class="primary-btn">Email is already Exist!</p>`			}
+			else{
+			console.log('New')
+			document.getElementById('mass').innerHTML =``
+			}
+
+			});
+
+
+}
+	//document.getElementById('left_content').innerHTML=`dddd`
+
+
+</script>
+
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<!-- stripe payments -->
+<script>
+  var stripe = Stripe("pk_test_51IWuSRFzvY3Oon8K8D1ifAh7gdslJbsw3KJbpkDzsL6hD0Ghy3ofVA1xjLk5eZHOzZnUta8A0fykbjP0ScpxTe5m00PLxoAn9p");
+
+  var elements = stripe.elements();
+
+  var style = {
+    base: {
+      color: "#32325d",
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: "antialiased",
+      fontSize: "16px",
+      "::placeholder": {
+        color: "#aab7c4",
+      },
+    },
+    invalid: {
+      color: "#fa755a",
+      iconColor: "#fa755a",
+    },
+  };
+
+  var card = elements.create("card", { style: style });
+
+  card.mount("#card-element");
+
+  card.on("change", function (event) {
+    var displayError = document.getElementById("card-errors");
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = "";
+    }
+  });
+
+  var form = document.getElementById("payment-form");
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function (result) {
+      if (result.error) {
+        console.log(result.error);
+        var errorElement = document.getElementById("card-errors");
+        errorElement.textContent = result.error.message;
+      } else {
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
+
+  function stripeTokenHandler(token) {
+    var money_qty = document.getElementById('id_amont').value;
+
+    var form = document.getElementById("payment-form");
+    var hiddenInput = document.createElement("input");
+
+    money_and_type = money_qty+','+token.id
+
+    hiddenInput.setAttribute("type", "hidden");
+    hiddenInput.setAttribute("name", "money_amount");
+    hiddenInput.setAttribute("value", money_and_type);
+
+    form.appendChild(hiddenInput);
+    form.submit();
+  }
+</script>
+<!-- stripe payments -->
+
+
+</html>

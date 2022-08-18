@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% block title %}{{page_title}}{% endblock %}
+{% block content %}
+	<div class="card shadow border-0" style="width: 100%; padding: 15px;">
+		<div class="row" style="color: #008CFF; font-weight: bold; font-size: 1.3rem; padding-bottom: 5px;">
+			<div class="col-md-8" style="align-self: end;">Edit Survey</div>
+			<div class="col-md-4">
+				
+			</div>
+		</div>
+		<div style="border-bottom: 2px solid #008CFF;"></div>
+		<br>
+		<form method="post">
+			{% csrf_token %}
+			<!-- Fields for handling dynamic form rendering -->
+			<input type="hidden" name="form-TOTAL_FORMS" value="1" id="id_form-TOTAL_FORMS">
+			<input type="hidden" name="form-INITIAL_FORMS" value="0" id="id_form-INITIAL_FORMS">
+			<input type="hidden" name="form-MIN_NUM_FORMS" value="0" id="id_form-MIN_NUM_FORMS">
+			<input type="hidden" name="form-MAX_NUM_FORMS" value="1000" id="id_form-MAX_NUM_FORMS">
+			<!-- Survey Details Sections -->
+			<div class="row form-row mt-4">
+				<div class="form-group col-md-6">
+					<label class="panel-body-text">Survey Name:<span style="color: red; font-weight: bold;">*</span></label>
+					<input type="text" name="survey_name" class="form-control textinput" placeholder="Enter the name of survey" value="{{survey_obj.name}}" required>
+				</div>
+				<div class="form-group col-md-6">
+					<label class="panel-body-text">Survey Purpose:<span style="color: red; font-weight: bold;">*</span></label>
+					<textarea name="survey_purpose" class="form-control textinput" required>{{survey_obj.survey_purpose}}</textarea>
+				</div>
+			</div>
+			<br>
+			<!-- Questionaire Details Section -->
+			<div class="row" style="color: #008CFF; font-weight: bold; font-size: 1.3rem; padding-bottom: 5px;">
+				<div class="col-md-8" style="align-self: end;">Questionaire Section</div>
+			</div>
+			<div class="mt-2">
+				<div class="row form-row question-container">
+					{% for question in survey_questions %}
+						<div class="form-group col-md-4 mb-3">
+							<label class="panel-body-text">Question Number:<span style="color: red; font-weight: bold;">*</span></label>
+							<input type="text" id="question-number-{{question.question_no}}" value="{{question.question_no}}" name="question-number-{{question.question_no}}" class="form-control textinput" placeholder="1 or 1.a question 1" required>
+						</div>
+						<div class="form-group col-md-8 mb-3">
+							<label class="panel-body-text">Question Statement:<span style="color: red; font-weight: bold;">*</span></label>
+							<input type="text" id="question-{{question.question_no}}-statement" value="{{question.question_statement}}" name="question-{{question.question_no}}-statement" class="form-control textinput" placeholder="Enter question statement" required>
+						</div>
+						<div class="form-group col-md-6 mb-3">
+							<label class="panel-body-text">Question Type:<span style="color: red; font-weight: bold;">*</span></label>
+							<select class="form-select" aria-label="Question type selection" id="question-{{question.question_no}}-question_type" name="question-{{question.question_no}}-question_type" required>
+								<option {% if not question.question_type %}selected{% endif %}>Select survey question type</option>
+								<option {% if question.question_type == 'Yes/No Question' %}selected{% endif %} value="Yes/No Question">
+								  	Yes/No Question
+								</option>
+								<option {% if question.question_type == 'Scaled Question' %}selected{% endif %} value="Scaled Question">
+								  	Scaled Question
+								</option>
+								<option {% if question.question_type == 'Scaled Question - Customer Satisfaction Survey' %}selected{% endif %} value="Scaled Question - Customer Satisfaction Survey">
+								  	Scaled Question - Customer Satisfaction Survey
+								</option>
+							  	<option {% if question.question_type == 'Scaled Question - Net Promoter Survey' %}selected{% endif %} value="Scaled Question - Net Promoter Survey">
+							  		Scaled Question - Net Promoter Survey
+							  	</option>
+							  	<option {% if question.question_type == 'Multiple Choices - Select One Answer' %}selected{% endif %} value="Multiple Choices - Select One Answer">
+							  		Multiple Choices - Select One Answer
+								</option>
+							  	<option {% if question.question_type == 'Multiple Choices - Select All That Applies' %}selected{% endif %} value="Multiple Choices - Select All That Applies">
+							  		Multiple Choices - Select All That Applies
+							  	</option>
+							  	<option {% if question.question_type == 'Free Form' %}selected{% endif %} value="Free Form">
+							  		Free Form
+							  	</option>
+							</select>
+						</div>
+						{% if question.question_type == 'Scaled Survey' %}
+							<div class="form-group col-md-6 mb-3">
+								<label class="panel-body-text">Scale Type:<span style="color: red; font-weight: bold;">*</span></label>
+								<select class="form-select" aria-label="Scaled question scale" id="question-{{question.question_no}}-scale_type" name="question-{{question.question_no}}-scale_type" >
+								  	<option {% if not question.scale_type %}selected{% endif %} selected>Select scale type</option>
+								  	<option {% if question.scale_type == '1-10' %}selected{% endif %} value="1-10">Scale 1 - 10</option>
+								  	<option {% if question.scale_type == '1-5' %}selected{% endif %} value="1-5">Scale 1 - 5</option>
+								  	<option {% if question.scale_type == '1-4' %}selected{% endif %} value="1-4">Scale 1 - 4</option>
+								</select>
+							</div>
+						{% elif question.question_type == 'Multiple Choices - Select One Answer' or question.question_type == 'Multiple Choices - Select All That Applies' %}
+							<div class="answers-container">
+								{% for choice in question.get_question_choices %}
+									<div class="form-group answers-input-field col-md-6 mb-3">
+										<label class="panel-body-text">
+											Choice Number {{forloop.counter}}:<span style="color: red; font-weight: bold;">*</span>
+										</label>
+										<input type="text" id="question-{{question.question_no}}-answer-{{choice.pk}}" name="question-{{question.question_no}}-answer-{{choice.pk}}" class="form-control textinput" placeholder="Enter answer fot the question" value="{{choice.answer_statement}}" required>
+									</div>
+								{% endfor %}
+							</div>
+						{% endif %}
+						<div class="form-group col-md-12 mb-3">
+							<div style="border-bottom: 1px solid #ced4da;"></div>
+						</div>
+					{% endfor %}					
+				</div>
+				<div class="mt-2">                    
+	                <button class="btn add-more-btn" type="submit">Save Survey</button>
+	            </div>
+			</div>
+			
+		</form>
+	</div>
+
+	<!-- Survey configuration section -->
+	<div class="survey-configurations-container mt-6">
+		<div class="card shadow border-0 survey-configurations-card shadow">
+			<div class="survey-configurations-card-head shadow">
+        		Upload csv file to invite recipients for fulfilling survey
+        	</div>
+        	<div class="survey-setting-content">
+        		<form method="post" action="{% url 'surveyscaled:send-email' survey_obj.slug %}" enctype="multipart/form-data">
+        			{% csrf_token %}
+        			<div class="fileUpload btn blue-btn">
+					    <span>Select email receipients list file</span>
+					    <input type="file" class="uploadlogo" name="email-list" accept=".csv" required/>
+					</div>
+	        		<a href="" class="btn upload-btn">Upload Control List</a>
+	        		<button type="submit" class="btn execute-btn">Execute Email Survey</button>
+        		</form>
+        	</div>
+		</div>
+		<div class="card shadow border-0 survey-configurations-card shadow">
+			<div class="survey-configurations-card-head shadow">
+        		Upload csv to send recipients link for survey page
+        	</div>
+        	<div class="survey-setting-content">
+        		<form method="post" action="{% url 'surveyscaled:send-email' survey_obj.slug %}" enctype="multipart/form-data">
+        			{% csrf_token %}
+        			<div class="fileUpload btn blue-btn">
+					    <span>Select email receipients list file</span>
+					    <input type="file" class="uploadlogo" name="link-email-list" accept=".csv" required/>
+					</div>
+					<a href="" class="btn upload-btn">Upload Control List</a>
+        			<button type="submit" class="btn execute-btn">Generate Survey Link</button>
+        		</form>
+        	</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block scripts %}
+	<script>
+		// You can modify the upload files to pdf's, docs etc
+		//Currently it will upload only images
+
+		$(document).ready(function($) {
+
+			// Upload btn on change call function
+			$(".uploadlogo").change(function() {
+			    var filename = readURL(this);
+			    $(this).parent().children('span').html(filename);
+			});
+
+		  	// Read File and return value  
+		  	function readURL(input) {
+			    var url = input.value;
+			    var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();	
+		    	if (input.files && input.files[0] && (ext == "csv")) {
+		      		var path = $(input).val();
+		      		var filename = path.replace(/^.*\\/, "");
+		      		// $('.fileUpload span').html('Uploaded Proof : ' + filename);
+		      		return "Uploaded file : "+filename;
+		    	} else {
+		      		$(input).val("");
+		      		return "Only csv formats are allowed!";
+		    	}
+		  	}
+		  	// Upload btn end
+		});
+	</script>
+{% endblock %}

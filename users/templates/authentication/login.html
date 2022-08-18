@@ -1,0 +1,107 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Main CSS, then Sidebar CSS-->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}?{% now 'U' %}">    
+
+        <!-- Fav Icon for the system -->
+        <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}?{% now 'U' %}"/>
+
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+        <title>Crunchscaled - Login</title>
+    </head>
+
+    <body>
+
+        <div class="overlay">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <!--   con = Container  for items in the form-->
+                <div class="con">
+                    <!--     Start  header Content  -->
+                    <header class="head-form">
+                        <h2>Crunchscaled</h2>
+                        <br>
+                        <!--     A welcome message or an explanation of the login form -->
+                        <h3>Welcome Back</h3>
+                        <p>login here using your username and password</p>
+                    </header>
+                    <!--     End  header Content  -->
+                    <br>
+                    <div class="field-set">
+
+                        <!--   user name -->
+                        <span class="input-item">
+                            <i class="fa fa-user-circle"></i>
+                        </span>
+                        <!--   user name Input-->
+                        {{ form.username.errors }}
+                        {% render_field form.username class="form-input" id="txt-input" placeholder="@UserName" required="true" %}
+                        <br>
+                        <!--   Password -->
+                        <span class="input-item">
+                            <i class="fa fa-key"></i>
+                        </span>
+                        <!--   Password Input-->
+                        {{ form.password.errors }}
+                        {% render_field form.password class="form-input" id="pwd" placeholder="Password" required="true" %}
+                        <!--      Show/hide password  -->
+                        <span>
+                            <i class="fa fa-eye" aria-hidden="true"  type="button" id="eye"></i>
+                        </span>
+                        <br>
+                        <!-- buttons -->
+                        <!-- button LogIn -->
+                        <button class="log-in"> Log In </button>
+                    </div>
+                    <!--   End Conrainer  -->
+                </div>
+                <!-- End Form -->
+                <div class="row">
+                    <div class="col"><hr></div>
+                    <div class="col-auto">or</div>
+                    <div class="col"><hr></div>
+                </div>
+
+                <div class="registration-container">
+                    <p>New to Crunchscaled?</p>
+                    <span>Register and discover a great amount of new opportunities!</span>
+                    <a href="{% url 'users:registration' %}" class="registration-btn">Register</a>
+                </div>
+            </form>
+        </div>
+
+        <script>
+            function show() {
+                var p = document.getElementById('pwd');
+                p.setAttribute('type', 'text');
+            }
+
+            function hide() {
+                var p = document.getElementById('pwd');
+                p.setAttribute('type', 'password');
+            }
+
+            var pwShown = 0;
+
+            document.getElementById("eye").addEventListener("click", function () {
+                if (pwShown == 0) {
+                    pwShown = 1;
+                    show();
+                } else {
+                    pwShown = 0;
+                    hide();
+                }
+            }, false);
+        </script>
+    </body>
+</html>

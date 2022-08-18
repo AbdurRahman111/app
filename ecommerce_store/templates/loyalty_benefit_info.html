@@ -1,0 +1,28 @@
+{% extends 'ecommerce_base.html' %}
+{% load static %}
+
+{% block title%}Loyalty Benefit Info{% endblock %}
+
+
+{% block body %}
+
+<div style="padding-top:35px; margin-left:10%; margin-right:10%;" class="container">
+
+    {% for i in loyalty_benefit_all %}
+    <div style="padding-top:35px;">
+        <h3 class="text-center" style="border-style: dashed;">{{ i.title }}</h3>
+        <div style="padding-top:20px;">{{ i.description | safe }}</div>
+    </div>
+    {% endfor %}
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+{% endblock %}

@@ -1,0 +1,173 @@
+{% load static %}
+{% with url_name=request.resolver_match.url_name %}
+  <nav class="navbar shadow">
+    <div class="nav-bar-container">
+
+      <div class="navbar-header">
+        <button class="navbar-toggler" data-toggle="open-navbar1">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        {% if app_name == 'experiment' %}
+          <a href="{% url 'experiment:experiment-dashboard' %}">
+            <h2>Testscaled</h2>
+          </a>
+        {% else %}
+          <a href="{% url 'surveyscaled:survey-dashboard' %}">
+            <h2>Surveyscaled</h2>
+          </a>
+        {% endif %}
+      </div>
+      {% if url_name != 'surveyscaled:upload-survey' %}
+        <div class="navbar-menu" id="open-navbar1">
+          <ul class="navbar-nav">
+            <li class="{% if url_name == 'home' %}active{% endif %}"><a href="{% url 'core:home' %}">Home</a></li>
+            {% if app_name == 'surveyscaled' %}
+              <li class="{% if url_name == 'survey-dashboard' %}active{% endif %}"><a href="{% url 'surveyscaled:survey-dashboard' %}">Dashboard</a></li>
+              <li class="navbar-dropdown {% if url_name == 'create-survey' or url_name == 'survey-list' or url_name == 'third-party-survey-list' or url_name == 'ingest-data' %}active{% endif %}">
+                <a href="#" class="dropdown-toggler" data-dropdown="my-dropdown-id">
+                  Survey <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown" id="my-dropdown-id">
+                  <li class="{% if url_name == 'create-survey' %}active{% endif %}">
+                    <a href="{% url 'surveyscaled:create-survey' %}">Create Survey</a>
+                  </li>
+                  <li class="{% if url_name == 'survey-list' %}active{% endif %}">
+                    <a href="{% url 'surveyscaled:survey-list' %}">Survey List</a>
+                  </li>
+                  
+                  <li class="separator"></li>
+                  <li class="{% if url_name == 'ingest-data' %}active{% endif %}">
+                    <a href="{% url 'surveyscaled:ingest-data' %}">Upload Response</a>
+                  </li>
+                  <li class="{% if url_name == 'third-party-survey-list' %}active{% endif %}">
+                    <a href="{% url 'surveyscaled:third-party-survey-list' %}">3rd Party Survey List</a>
+                  </li>
+                  <li class="separator"></li>
+                </ul>
+              </li>
+            {% elif app_name == 'experiment' %}
+              <li class="{% if url_name == 'experiment-dashboard' %}active{% endif %}">
+                <a href="{% url 'experiment:experiment-dashboard' %}">Dashboard</a>
+              </li>
+              <li class="navbar-dropdown {% if url_name == 'create-experiment' or url_name == 'experiment-list' or url_name == 'upload-experiment' %}active{% endif %}">
+                <a href="#" class="dropdown-toggler" data-dropdown="experiment-dropdown">
+                  Experiments <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown" id="experiment-dropdown">
+                  <li class="{% if url_name == 'create-experiment' %}active{% endif %}">
+                    <a href="#" class="create-experiment">Create Experiment</a>
+                  </li>
+                  <li class="{% if url_name == 'experiment-list' %}active{% endif %}">
+                    <a href="{% url 'experiment:experiment-list' %}">Experiment List</a>
+                  </li>
+                  <li class="separator"></li>
+                  <li class="{% if url_name == 'upload-experiment' %}active{% endif %}">
+                    <a href="{% url 'experiment:upload-experiment' %}">Upload Experiment</a>
+                  </li>
+                </ul>
+              </li>
+            {% endif %}
+            <li class="navbar-dropdown {% if url_name == 'user-list' or url_name == 'registration' %}active{% endif %}">
+                <a href="#" class="dropdown-toggler" data-dropdown="admin-dropdown">
+                  Users <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown" id="admin-dropdown">
+                  <li class="{% if url_name == 'user-list' %}active{% endif %}">
+                    <a href="{% url 'users:user-list' %}" class="create-experiment">Users List</a>
+                  </li>
+                  <li class="{% if url_name == 'registration' %}active{% endif %}">
+                    <a href="{% url 'users:registration' %}">Register User</a>
+                  </li>
+                </ul>
+              </li>
+            <li class="navbar-dropdown {% if url_name == 'create-experiment' or url_name == 'experiment-list' or url_name == 'upload-experiment' %}active{% endif %}">
+                <a href="#" class="dropdown-toggler" data-dropdown="user-dropdown">
+                  <img src="{% static 'profile_logo.jpg' %}" alt="" class="user-avatar-md rounded-circle"> &nbsp;{{request.user.username}} <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown" id="user-dropdown">
+                  <li class="{% if url_name == 'create-experiment' %}active{% endif %}">
+                    <a href="{% url 'users:user-profile' %}" class="create-experiment">
+                      Profile
+                    </a>
+                  </li>
+                  {% if request.user.is_superuser %}
+                    <li class="{% if url_name == 'upload-experiment' %}active{% endif %}">
+                      <a href="{% url 'admin:index' %}">Admin Panel</a>
+                    </li>
+                  {% endif %}
+                  <li class="separator"></li>
+                  <li class="">
+                    <a href="{% url 'users:logout' %}">Logout</a>
+                  </li>
+                </ul>
+            </li>
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  </nav>
+{% endwith %}
+{% if app_name == 'experiment' %}
+  {% include 'experiment_creation_modal.html' %}
+{% endif %}
+<script>
+  let dropdowns = document.querySelectorAll('.navbar .dropdown-toggler')
+  let dropdownIsOpen = false
+
+  // Handle dropdown menues
+  if (dropdowns.length) {
+    
+    dropdowns.forEach((dropdown) => {
+      dropdown.addEventListener('click', (event) => {
+        let target = document.querySelector(`#${event.target.dataset.dropdown}`)
+
+        if (target) {
+          if (target.classList.contains('show')) {
+            target.classList.remove('show')
+            dropdownIsOpen = false
+          } else {
+            target.classList.add('show')
+            dropdownIsOpen = true
+          }
+        }
+      })
+    })
+  }
+
+  // Handle closing dropdowns if a user clicked the body
+  window.addEventListener('mouseup', (event) => {
+    if (dropdownIsOpen) {
+      dropdowns.forEach((dropdownButton) => {
+        let dropdown = document.querySelector(`#${dropdownButton.dataset.dropdown}`)
+        let targetIsDropdown = dropdown == event.target
+
+        if (dropdownButton == event.target) {
+          return
+        }
+
+        if ((!targetIsDropdown) && (!dropdown.contains(event.target))) {
+          dropdown.classList.remove('show')
+        }
+      })
+    }
+  })
+
+  // Open links in mobiles
+  function handleSmallScreens() {
+    document.querySelector('.navbar-toggler')
+      .addEventListener('click', () => {
+      let navbarMenu = document.querySelector('.navbar-menu')
+
+      if (navbarMenu.style.display === 'flex') {
+        navbarMenu.style.display = 'none'
+        return
+      }
+
+      navbarMenu.style.display = 'flex'
+    })
+  }
+
+  handleSmallScreens()
+</script>

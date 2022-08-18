@@ -1,0 +1,519 @@
+{% extends 'base.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block survey_sidebar %}
+    <aside class="shadow">
+        <div>
+            <div class="sidebar-heading">Survey List</div>
+            <div class="sidebar-body">
+                {% for surveys in survey_list %}
+                    <a href="{% url 'surveyscaled:get-survey-api' surveys.pk %}" class="dropdown-btn {% if surveys.pk == survey.pk %}active{% endif %}">
+                        <div>
+                            <span class="survey_no">{{surveys.survey_no}}</span>
+                            <span>{{surveys.name}}</span>
+                        </div>
+                    </a>
+                {% endfor %}
+                {% if survey_list.has_next %}
+                    <p class="pagination">
+                        <a class="next-page" href="?page={{ survey_list.next_page_number }}">More...</a>
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+        
+    </aside>
+{% endblock %}
+
+{% block content %}
+    <div class="row g-6 mb-6">
+        <div class="col-xl-3 col-sm-6 col-12">
+            <div class="card card-height shadow border-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Total Surveys</span>
+                            <span class="h3 font-bold mb-0">{{survey_obj.count}}</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-tertiary text-white text-lg rounded-circle">
+                                <i class="bi bi-credit-card"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2 mb-0 text-sm">
+                        <span class="badge badge-pill bg-soft-success">&nbsp;</span><br>
+                        <span class="text-nowrap text-xs text-muted">Since begining</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12">
+            <div class="card card-height shadow border-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">New Surveys</span>
+                            <span class="h3 font-bold mb-0">{{new_survey_count}}</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-primary text-white text-lg rounded-circle">
+                                <i class="bi bi-people"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2 mb-0 text-sm">
+                        <span class="badge badge-pill bg-soft-success {% if growth_over_previous_month >= 0 %}text-success{% elif growth_over_previous_month < 0 %}text-danger{% endif %} me-2">
+                            {% if growth_over_previous_month == 0 %}
+                                <i class="fas fa-minus me-1"></i>
+                            {% elif growth_over_previous_month > 0 %}
+                                <i class="fas fa-long-arrow-up me-1"></i>
+                            {% elif growth_over_previous_month < 0 %}
+                                <i class="fas fa-long-arrow-down me-1"></i>
+                            {% endif %}
+                            {{growth_over_previous_month}}%
+                        </span>
+                        <span class="text-nowrap text-xs text-muted">Since last month</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12">
+            <div class="card card-height shadow border-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Active Surveys</span>
+                            <span class="h3 font-bold mb-0">{{active_surveys}}</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-info text-white text-lg rounded-circle">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2 mb-0 text-sm">
+                        <span class="badge badge-pill bg-soft-danger text-danger me-2">
+                            
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Survey Details -->
+    <div class="survey-content-section">
+        <div class="card shadow border-0 mt-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="survey-details-heading mb-2">Survey Details</div>
+                    <div class="col-6 survey_details">
+                        <span class=""><strong>Survey #: </strong>{{survey.survey_no}}</span>
+                        <span class=""><strong>Name: </strong>{{survey.name}}</span>
+                        <span class=""><strong>Purpose: </strong>{{survey.survey_purpose}}</span>
+                        <span class=""><strong>Question Scale: </strong>{{survey.question_sacle}}</span>
+                        <span class=""><strong>Total Responses: </strong>{{survey.total_reponses}}</span>
+                    </div>
+                    <div class="col-6 survey_details">
+                        <span class=""><strong>Creation Date: </strong>{{survey.created_on}}</span>
+                        <span class=""><strong>Last Updated On: </strong>{{survey.updated_on}}</span>
+                        <span class="">
+                            <strong>Status: </strong>
+                            {% if survey.is_active %}
+                                <span class="text-success">
+                                    <i class="fas fa-check-circle me-1"></i>Active
+                                </span>
+                                {% else %}
+                                <span class="text-danger">
+                                    <i class="fas fa-times-circle me-1"></i>Close
+                                </span>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question Charts -->
+        <div class="chart-grid mt-4">
+            {% for question in survey.get_questions_list_for_dashboard %}
+                <div class="card shadow border-0">
+                    <div class="mb-3 question_statement">{{question.question_statement}}</div>
+                    <canvas id="{{question.pk}}"></canvas>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="script-tag">
+        
+        </div>  
+    </div>
+    
+    
+{% endblock %}
+
+{% block scripts %}
+    <!-- jScroll plug-in CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.min.js"></script>
+
+    <script>
+        jQuery(function ($) {
+            var $list = $('.sidebar-body'); //selecting class for the scrolling
+            $list.jscroll({
+                loadingHtml: '<div class="text-center">' +
+                    `<div class="spinner-border mt-3" style="color: #008CFF; width: 2rem; height: 2rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>` +
+                '</div>',
+                padding: 100,
+                pagingSelector: '.pagination',
+                nextSelector: 'a.next-page:last',
+                contentSelector: '.sidebar-body,.pagination' //selecting class for displaying data after pagination on scroll
+            });
+        });
+    </script>
+    <script>
+        var $j = jQuery.noConflict();
+        // Question grapsh rendering section
+        // let labels = {{labels|safe}};
+        let response_data = [];
+        let graph_labels = [];
+        let backgroundColors = [];
+        let borderColors = [];
+        let chartType;
+        let total_survey_responses = parseInt({{survey.total_reponses}});
+        let number_of_responses;
+        // {% for label in labels %}
+        //     {% if labels|length == 10 %}
+        //         if(`{{label}}` <= 3){
+        //             backgroundColors.push('rgba(255, 99, 132, 0.2)')
+        //             borderColors.push('rgba(255, 99, 132, 1)')
+        //         }
+        //         else if(`{{label}}` > 3 && `{{label}}` <= 6){
+        //             backgroundColors.push('rgba(247, 207, 49, 0.2)')
+        //             borderColors.push('rgba(247, 207, 49, 1)')
+        //         }
+        //         else if(`{{label}}` > 6 && `{{label}}` <= 9){
+        //             backgroundColors.push('rgba(2, 166, 242, 0.2)')
+        //             borderColors.push('rgba(2, 166, 242, 1)')
+        //         }
+        //         else if(`{{label}}` > 9){
+        //             backgroundColors.push('rgba(139, 219, 89, 0.2)')
+        //             borderColors.push('rgba(139, 219, 89, 1)')
+        //         }
+        //     {% elif labels|length == 5 %}  
+        //         if(`{{label}}` < 3){
+        //             backgroundColors.push('rgba(255, 99, 132, 0.2)')
+        //             borderColors.push('rgba(255, 99, 132, 1)')
+        //         }
+        //         else if(`{{label}}` > 2 && `{{label}}` <= 4){
+        //             backgroundColors.push('rgba(2, 166, 242, 0.2)')
+        //             borderColors.push('rgba(2, 166, 242, 1)')
+        //         }
+        //         else if(`{{label}}` > 4){
+        //             backgroundColors.push('rgba(139, 219, 89, 0.2)')
+        //             borderColors.push('rgba(139, 219, 89, 1)')
+        //         }
+        //     {% elif labels|length == 4 %}
+        //         if(`{{label}}` < 3){
+        //             backgroundColors.push('rgba(255, 99, 132, 0.2)')
+        //             borderColors.push('rgba(255, 99, 132, 1)')
+        //         }
+        //         else if(`{{label}}` > 2 && `{{label}}` < 4){
+        //             backgroundColors.push('rgba(2, 166, 242, 0.2)')
+        //             borderColors.push('rgba(2, 166, 242, 1)')
+        //         }
+        //         else if(`{{label}}` > 4){
+        //             backgroundColors.push('rgba(139, 219, 89, 0.2)')
+        //             borderColors.push('rgba(139, 219, 89, 1)')
+        //         }
+        //     {% else %}
+        //         if(`{{label}}` == 'No'){
+        //             backgroundColors.push('rgba(255, 99, 132, 0.2)')
+        //             borderColors.push('rgba(255, 99, 132, 1)')
+        //         }
+        //         else if(`{{label}}` == 'Yes'){
+        //             backgroundColors.push('rgba(139, 219, 89, 0.2)')
+        //             borderColors.push('rgba(139, 219, 89, 1)')
+        //         }
+        //     {% endif %}
+        // {% endfor %}
+
+        {% for question in survey.get_questions_list_for_dashboard %}
+            console.log('Question:  '+`{{question.question_statement}}`)
+            // Clearing array for each question
+            response_data = [];
+            // Conditions for determining label for grpah chart
+            {% if question.question_type == 'Yes/No Question' %}
+                graph_labels = ['Yes', 'No'];
+                // Appending colors for graph in color arrays
+                backgroundColors.push('rgba(139, 219, 89, 0.2)')
+                borderColors.push('rgba(139, 219, 89, 1)')
+                backgroundColors.push('rgba(255, 99, 132, 0.2)')
+                borderColors.push('rgba(255, 99, 132, 1)')
+                // Defining chart type
+                chartType = 'bar'
+
+            {% elif question.question_type == 'Scaled Question' %}
+                // Since this is a scaled question, we need to determine 3 different sets of labels depending on scale_type for this question.
+                {% if question.scale_type == '1-10' %}
+                    graph_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+                {% elif question.scale_type == '1-5' %}
+                    graph_labels = [1, 2, 3, 4, 5];
+
+                {% elif question.scale_type == '1-4' %}
+                    graph_labels = [1, 2, 3, 4];
+
+                {% endif %}
+
+            {% elif question.question_type == 'Scaled Question - Customer Satisfaction Survey' or question.question_type == 'Scaled Question - Net Promoter Survey' %}
+                graph_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+            {% elif question.question_type == 'Multiple Choices - Select One Answer' or question.question_type == 'Multiple Choices - Select All That Applies' %}
+                // Since these are multiple choice questions, we need to determine labels according to choice added by user
+                graph_labels = [];
+                {% for choice in question.get_question_choices %}
+                    graph_labels.push(`{{choice.answer_statement}}`)
+                {% endfor %}
+
+            {% endif %}
+
+            // Loop for determining responses data for graph labels
+            for (var x = 0; x < graph_labels.length; x++) {
+                let added = false;
+                // Loop for determining responses data for graph
+                {% for answer in question.get_response_answers_count %}
+                    number_of_responses = parseInt(`{{answer.1}}`)
+                    if(graph_labels[x] == `{{answer.0}}`){
+                        let percentage = number_of_responses / total_survey_responses * 100;
+                        response_data.push(percentage);
+                        added = true
+                    }
+                {% endfor %}
+
+                if(added == false){
+                    response_data.push(0);
+                }
+            }
+
+            console.log('Label: '+graph_labels);
+            console.log('Response Data:  '+response_data)
+
+            const ctx{{question.pk}} = document.getElementById('{{question.pk}}').getContext('2d');
+            const myChart{{question.pk}} = new Chart(ctx{{question.pk}}, {
+                type: chartType,
+                data: {
+                    labels: graph_labels,
+                    datasets: [{
+                        label: 'Persons',
+                        data: response_data,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 1,
+                        barPercentage: .7,
+                        barThickness: 'flex',
+                        minBarLength: 2,
+                        label: "Response Rate",
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            min: 0,
+                            max: 100,
+                            stepValue: 20,
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    var label = context.dataset.label || '';
+                                    if (context.parsed.y !== null) {
+                                        label += 'Conversion Rate = ' +context.parsed.y + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                    }
+                }
+            });
+        {% endfor %}
+
+        // Sidebar survey navigation click event capture
+        // var dropdown = document.getElementsByClassName("dropdown-btn");
+        // var i;
+        // let surveySection = document.querySelector('.survey-content-section');
+        // var question_list;
+        // for (i = 0; i < dropdown.length; i++) {
+        //     dropdown[i].addEventListener("click", function() {
+        //         let survey_no = this.children[0].children[0].innerHTML
+        //         var c = 0;
+        //         while (c < dropdown.length) {
+        //           dropdown[c++].classList.remove('active');
+        //         }
+        //         this.classList.toggle('active');
+        //         surveySection.className = 'survey-content-section card shadow border-0 mt-4 spinner-loader';
+        //         surveySection.innerHTML =   `<div class="spinner-border" style="color: #008CFF; width: 5rem; height: 5rem;" 
+        //                                         role="status">
+        //                                         <span class="visually-hidden">Loading...</span>
+        //                                     </div>`
+                
+        //         // if (document.contains(document.querySelector(".chart-scripts"))) {
+        //         //     var divs = document.querySelectorAll('.chart-scripts');
+        //         //     Array.from(divs).forEach((div) => div.remove())
+        //         // }
+        //         handleSurveyCreation(survey_no);
+        //     })
+        // }
+
+        // // Code for closing yearly session
+        // const handleSurveyCreation = (pk) => {
+        //     console.log('Inside Ajax'+pk)
+        //     $j.ajax({
+        //         // Defining the work of the function to get data from url /hall/food-menu-dishes
+        //         type:  'GET',
+        //         url:   `survey/api/survey-response/${pk}`,
+        //         success: (data) => {
+        //             console.log(data.is_active)
+        //             surveySection.className = 'survey-content-section';
+        //             if(data.is_active === true){
+        //                 surveySection.innerHTML = `
+        //                     <div class="card shadow border-0 mt-4">
+        //                         <div class="card-body">
+        //                             <div class="row">
+        //                                 <div class="survey-details-heading mb-2">Survey Details</div>
+        //                                 <div class="col-6 survey_details">
+        //                                     <span class=""><strong>Survey #: </strong>${data.survey_no}</span>
+        //                                     <span class=""><strong>Name: </strong>${data.survey_name}</span>
+        //                                     <span class=""><strong>Purpose: </strong>${data.survey_purpose}</span>
+        //                                     <span class=""><strong>Question Scale: </strong>${data.question_sacle}</span>
+        //                                     <span class=""><strong>Total Responses: </strong>${data.total_reponses}</span>
+        //                                 </div>
+        //                                 <div class="col-6 survey_details">
+        //                                     <span class=""><strong>Creation Date: </strong>${data.created_on}</span>
+        //                                     <span class=""><strong>Last Updated On: </strong>${data.updated_on}</span>
+        //                                     <span class="">
+        //                                         <strong>Status: </strong>
+        //                                         <span class="text-success">
+        //                                             <i class="fas fa-check-circle me-1"></i>Active
+        //                                         </span>
+        //                                     </span>
+        //                                 </div>
+        //                             </div>
+        //                         </div>
+        //                     </div>
+        //                     <div class="chart-grid mt-4">
+        //                     </div>
+        //                     <div class="script-tag">
+        //                     </div> 
+        //                 `
+        //                 let surveyChartSection = document.querySelector('.chart-grid')
+        //                 question_list = JSON.parse(data.question_list)
+        //                 const scriptTag = document.querySelector('.script-tag');
+        //                 response_array = JSON.parse(data.response_data)
+        //                 console.log('Response Array: '+data.response_data.array)
+        //                 console.log('Response Array Parse: '+response_array)
+        //                 for(var i=0; i<question_list.length; i++){
+
+        //                     var newChartTag = document.createElement('div');
+        //                     newChartTag.className = 'card shadow border-0';
+
+        //                     var newChartChildTag = document.createElement('div');
+        //                     newChartChildTag.className = 'mb-3 question_statement';
+
+        //                     var inlineChartQuestionTag = document.createTextNode(`
+        //                         ${question_list[i].fields.question_statement}
+        //                     `);
+
+        //                     newChartChildTag.appendChild(inlineChartQuestionTag);
+        //                     newChartTag.appendChild(newChartChildTag);
+
+        //                     var newChartCanvasTag = document.createElement('canvas');
+        //                     newChartCanvasTag.setAttribute("id", `${question_list[i].fields.question_no}`)
+        //                     newChartTag.appendChild(newChartCanvasTag);
+
+        //                     surveyChartSection.appendChild(newChartTag);
+
+        //                     var newScript = document.createElement("script");
+        //                     newScript.className = 'chart-scripts';
+        //                     console.log(question_list[i])
+        //                     var inlineScript = document.createTextNode(`
+        //                         const ctx${question_list[i].fields.question_no} = document.getElementById('${question_list[i].fields.question_no}').getContext('2d');
+        //                         console.log('Added chart declare');
+        //                         const myChart${question_list[i].fields.question_no} = new Chart(ctx${question_list[i].fields.question_no}, {
+        //                             type: 'bar',
+        //                             data: {
+        //                                 labels: [${data.labels}], 
+        //                                 datasets: [{ 
+        //                                     label: 'Persons',
+        //                                     data: [1, 2, 3, 4, 4, 4, 4, 4, 4, 4], 
+        //                                     backgroundColor: '#333', 
+        //                                     borderWidth: 1, 
+        //                                     barPercentage: .7, 
+        //                                     barThickness: 'flex', 
+        //                                     minBarLength: 2, 
+        //                                     label: "Response Rate", 
+        //                                 }] 
+        //                             }, 
+        //                             options: { 
+        //                                 responsive: true, 
+        //                                 scales: { 
+        //                                     y: { 
+        //                                         beginAtZero: true 
+        //                                     } 
+        //                                 }, 
+        //                                 legend: { 
+        //                                     display: true, 
+        //                                 }, 
+        //                             } 
+        //                         });`
+        //                     );
+        //                     newScript.appendChild(inlineScript); 
+        //                     scriptTag.appendChild(newScript);
+        //                 }
+        //             } else {
+        //                 surveySection.innerHTML = `
+        //                     <div class="card shadow border-0 mt-4">
+        //                         <div class="card-body">
+        //                             <div class="row">
+        //                                 <div class="survey-details-heading mb-2">Survey Details</div>
+        //                                 <div class="col-6 survey_details">
+        //                                     <span class=""><strong>Survey #: </strong>${data.survey_no}</span>
+        //                                     <span class=""><strong>Name: </strong>${data.survey_name}</span>
+        //                                     <span class=""><strong>Purpose: </strong>${data.survey_purpose}</span>
+        //                                     <span class=""><strong>Question Scale: </strong>${data.question_sacle}</span>
+        //                                     <span class=""><strong>Total Responses: </strong>${data.total_reponses}</span>
+        //                                 </div>
+        //                                 <div class="col-6 survey_details">
+        //                                     <span class=""><strong>Creation Date: </strong>${data.created_on}</span>
+        //                                     <span class=""><strong>Last Updated On: </strong>${data.updated_on}</span>
+        //                                     <span class="">
+        //                                         <strong>Status: </strong>
+        //                                         <span class="text-danger">
+        //                                             <i class="fas fa-times-circle me-1"></i>Close
+        //                                         </span>
+        //                                     </span>
+        //                                 </div>
+        //                             </div>
+        //                         </div>
+        //                     </div>
+        //                 `
+        //             }
+
+
+                    
+        //         },
+        //         error: (error) => {
+        //             console.log(error);
+        //         }
+        //     })
+        // }
+    </script>
+{% endblock %}

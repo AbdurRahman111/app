@@ -1,0 +1,139 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Home Css Stylesheets -->
+		<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+		<!-- Fav Icon for the system -->
+	    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+	    <!-- Font Awesome CDN -->
+		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+		<title>{{title}}</title>
+	</head>
+	<body>
+		<header class="header">
+			<div class="title">
+				Welcome to Mediascaled Prescriptive Services
+				<br>
+				<span>Please select your service</span>
+			</div>
+			<div class="apps-container">
+				{% for app in susbscriptions_obj.get_package %}
+					{% if app.app_name == 'Surveyscaled' %}
+						<a href="{% url 'surveyscaled:survey-dashboard' %}" class="card shadow border-0">
+							<div class="card-body">
+								<div class="icon-container">
+									<i class="fas fa-chart-line fa-2x"></i>
+								</div>
+								<div class="card-info">
+									Survey Management at Scale (Surveyscaled)
+								</div>
+							</div>
+						</a>
+					{% elif app.app_name == 'User Registration Landing Page' %}
+						<a href="{% url 'landing_page_one' %}" class="card shadow border-0">
+							<div class="card-body">
+								<div class="icon-container">
+									<i class="fas fa-users fa-2x"></i>
+								</div>
+								<div class="card-info">
+									User Registeration Landing Page Management
+								</div>
+							</div>
+						</a>
+					{% elif app.app_name == 'Testscaled' %}
+						<a href="{% url 'experiment:experiment-dashboard' %}" class="card shadow border-0">
+							<div class="card-body">
+								<div class="icon-container">
+									<i class="fas fa-flask fa-2x"></i>
+								</div>
+								<div class="card-info">
+									Incremental Test Management at Scale (Testscaled)
+								</div>
+							</div>
+						</a>
+					{% elif app.app_name == 'Download Landing Page' %}
+						<a href="{% url 'landing_page_seven' %}" class="card shadow border-0">
+							<div class="card-body">
+								<div class="icon-container">
+									<i class="fas fa-cloud-download fa-2x"></i>
+								</div>
+								<div class="card-info">
+									Download Landing Page
+								</div>
+							</div>
+						</a>
+					{% elif app.app_name == 'E-commerce Site Management' %}
+						<a href="{% url 'landing_page_two' %}" class="card shadow border-0">
+							<div class="card-body">
+								<div class="icon-container">
+									<i class="fas fa-shopping-cart fa-2x"></i>
+								</div>
+								<div class="card-info">
+									E-commerce Site Management (Sellscaled)
+								</div>
+							</div>
+						</a>
+					{% elif app.app_name == 'Price Pormotion Landing Page' %}
+						<a href="{% url 'landing_page_three' %}" class="card shadow border-0">
+							<div class="card-body">
+								<div class="icon-container mb-3">
+									<i class="fas fa-usd-circle fa-2x"></i>
+								</div>
+								<div class="card-info">
+									Price Promotion Landing Page Management
+								</div>
+							</div>
+						</a>
+					{% elif app.app_name == 'Video Landing Page' %}
+						<a href="{% url 'landing_page_eight' %}" class="card shadow border-0">
+							<div class="card-body">
+								<div class="icon-container">
+									<i class="fab fa-youtube fa-2x"></i>
+								</div>
+								<div class="card-info">
+									Video Landing Page Management
+								</div>
+							</div>
+						</a>
+					{% elif app.app_name == 'Donation Landing Page' %}
+						<a href="{% url 'landing_page_four' %}" class="card shadow border-0">
+							<div class="card-body">
+								<div class="icon-container">
+									<i class="fas fa-donate fa-2x"></i>
+								</div>
+								<div class="card-info">
+									Donation Landing Page Management
+								</div>
+							</div>
+						</a>
+					{% elif app.app_name == 'Event Registration Landing Page' %}
+						<a href="{% url 'landing_page_five' %}" class="card shadow border-0">
+							<div class="card-body">
+								<div class="icon-container">
+									<i class="fas fa-calendar-star fa-2x"></i>
+								</div>
+								<div class="card-info">
+									Event Registration Landing Page Management
+								</div>
+							</div>
+						</a>
+					{% endif %}
+				{% endfor %}
+				<!-- <a href="#" class="card shadow border-0">
+					<div class="card-body">
+						<div class="icon-container">
+							<i class="fas fa-clipboard-list fa-2x"></i>
+						</div>
+						<div class="card-info">
+							Product Listing Landing Page Management
+						</div>
+					</div>
+				</a> -->
+			</div>
+		</header>
+	</body>
+</html>
